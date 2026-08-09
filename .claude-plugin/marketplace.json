@@ -1,0 +1,14 @@
+{
+  "name": "kickoff",
+  "owner": { "name": "khrapovitskiyivan" },
+  "metadata": {
+    "description": "A shareable starter kit: spec-first planning + vetted tooling setup for new and existing projects."
+  },
+  "plugins": [
+    {
+      "name": "kickoff",
+      "source": "./plugins/kickoff",
+      "description": "Spec-first project kickoff + recommend & equip the right Claude Code tooling, with a vet-before-install pass."
+    }
+  ]
+}
