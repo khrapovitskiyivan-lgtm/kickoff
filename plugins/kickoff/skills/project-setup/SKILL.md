@@ -1,52 +1,62 @@
 ---
 name: project-setup
-description: Use when starting, planning, creating, or scaffolding a project, or when setting up, auditing, or strengthening an existing one — to choose the right agent tooling (Claude Code skills, plugins, MCP servers, hooks) for the detected stack, with a vet-before-install safety pass. Triggers on "new project", "set up", "get started", "what should I install", "strengthen my project". Pairs with spec-first for new projects. Not a replacement for deep analysis (see the official claude-code-setup plugin).
+description: Use when starting, planning, or scaffolding a project, or setting up / auditing / strengthening an existing one — analyze what the project actually needs across every dimension (code intelligence, testing, data, frontend quality, security, delivery, monitoring, docs, collaboration), then recommend and vet the right agent tooling. Use a curated baseline as a fast prior but actively discover beyond it via skills.sh and the official claude-code-setup. Triggers on "new project", "set up", "get started", "what should I install", "strengthen my project".
 ---
 
-# Project setup — recommend & equip (safely)
+# Project setup — analyze needs first, then equip (safely)
 
-Two entry paths.
+Goal: recommend what **this** project actually needs — discovered by analysis, **not
+limited to a fixed list**. The baseline below is a fast starting prior, NOT a ceiling.
+When a need isn't in it, go find the right tool.
 
-## New project
-1. Apply **spec-first** (in this kit) — pick Spec vs Spike track, write the 6-block spec before code.
-2. Establish the intended stack, then equip across the dimensions below.
-3. Run the vetting pass before installing anything third-party.
+## Step 1 — Analyze the project's real needs (not just its stack)
 
-## Existing project
-1. Detect the stack: read `package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`, `.git`, framework configs, CI files, `Dockerfile`.
-2. Go dimension by dimension below and recommend what is missing.
-3. For a deeper, per-category pass, run the official **claude-code-setup** plugin (read-only analyzer).
-4. Vet before installing.
+Read the code and config (`package.json`, `requirements.txt`, `pyproject.toml`,
+`go.mod`, `.git`, framework configs, CI files, `Dockerfile`, tests dir). Then name the
+concrete **gaps** across these dimensions — the actual needs, e.g.:
 
-## Baseline by project dimension (curated defaults — useful, not exhaustive)
+- **Code intelligence** — language-server / type support present? fresh library docs?
+- **Testing** — any tests? E2E for the UI? coverage on critical logic?
+- **Data** — how does it talk to its DB? migrations? typed access?
+- **Frontend quality** — perf / Core Web Vitals / a11y for a user-facing UI?
+- **Security** — handles auth / PII / payments? any review in place?
+- **Delivery** — CI? a deploy target? containerization?
+- **Observability** — error monitoring in production?
+- **Docs / ingest** — needs to read external documents (.docx/.pdf/…)?
+- **Collaboration** — PR / issue workflow?
 
-Recommend only what fits the project. Prefer official / reputable; flag anything third-party.
+For a **deep, per-category analysis of an existing codebase, run the official
+`claude-code-setup`** (the specialized read-only analyzer) and fold its findings in —
+don't reinvent it here.
 
-| Dimension | When it applies | Recommend | Note |
+## Step 2 — For each identified need, find the best-fit tooling
+
+1. Check the **baseline** below — a fast, already-vetted prior.
+2. If the need isn't covered there, **actively discover — do NOT stop at this list**:
+   - search the live directory: `npx skills find "<the need>"` (skills.sh),
+   - check marketplaces / the official plugin directory,
+   - use your own current knowledge of the ecosystem,
+   - and surface what `claude-code-setup` recommends.
+3. The right answer is **whatever fits the analyzed need**, from anywhere — the baseline
+   is just the shortcut for common cases.
+
+## Baseline (fast prior for common needs — not exhaustive)
+
+| Dimension | When it applies | Common default | Note |
 |---|---|---|---|
-| Code intelligence | any TS/JS or Python | `typescript-lsp` / `pyright-lsp`; `context7` for fresh library docs | official |
+| Code intelligence | any TS/JS or Python | `typescript-lsp` / `pyright-lsp`; `context7` | official |
 | Testing (E2E) | web UI / browser flows | `playwright` | official |
-| Database / data | uses Supabase / Prisma / Postgres | `supabase` / `prisma` / Neon MCP (match what it uses) | vendor MCP — needs a token; give minimal scope |
-| Frontend quality & design | React / Next / Vue / Svelte / Tailwind | `web-quality-skills` (perf/CWV/a11y/SEO), official `frontend-design` | reputable / official |
-| Security & governance | handles auth / PII / payments | official `security-guidance`, `/security-review`; (advanced) `Strix` — signs & verifies the agent's tool-calls | Strix is third-party + niche — vet before use |
-| Deployment / infra | deploys to a host | `vercel` / `railway` / `render` MCP by host; Docker / Terraform | vendor — vet / token |
-| Monitoring | running in production | `sentry` | needs a DSN / auth |
-| Docs / ingest | works with .docx / .pdf / .pptx | `markitdown` MCP (official Microsoft) | official |
-| Version control | has a GitHub remote | `github` plugin | needs a token |
-| Methodology / planning | any real (multi-module) project | `spec-first` (this kit) | ours |
+| Database / data | Supabase / Prisma / Postgres | `supabase` / `prisma` / Neon MCP | vendor MCP — token, minimal scope |
+| Frontend quality & design | React/Next/Vue/Svelte/Tailwind | `web-quality-skills`, official `frontend-design` | reputable / official |
+| Security & governance | auth / PII / payments | `security-guidance`, `/security-review`; (adv.) `Strix` | Strix third-party + niche — vet |
+| Deployment / infra | deploys to a host | `vercel` / `railway` / `render` MCP; Docker / Terraform | vendor — vet / token |
+| Monitoring | in production | `sentry` | needs a DSN / auth |
+| Docs / ingest | .docx / .pdf / .pptx | `markitdown` MCP (official Microsoft) | official |
+| Version control | GitHub remote | `github` | needs a token |
+| Methodology | multi-module project | `spec-first` (this kit) | ours |
 
-Install a plugin with `claude plugin install <name>@<marketplace>`; add an MCP server with `claude mcp add`.
-
-## Discover more (breadth without hardcoding hype)
-
-This baseline is curated defaults, not the whole ecosystem. For the long tail:
-- Browse the live directory **skills.sh** (`npx skills find "<need>"`).
-- Run the official **claude-code-setup** for a deep, per-category recommendation.
-
-Treat any social-media "top N plugins you must install" list as **leads, not gospel** — identify and vet each item first (some are niche, some are hype, some are unidentifiable).
-
-## Vet before install (always)
-- Prefer **reputable authors / official** sources.
-- **Skills** (markdown instructions) are lower-risk than **plugins with hooks or MCP servers** — the latter execute code / connect to real accounts. Read the hooks/scripts before enabling; give MCP servers minimal scope.
-- **Don't stack overlapping skills** (e.g. several "make design better" skills fighting for the same job).
-- Skip the ceremony for one-off / throwaway scripts.
+## Step 3 — Vet, then recommend / install
+- Prefer **reputable authors / official** sources; treat "top-N you must install" lists as **leads, not gospel** — identify and vet each item.
+- **Skills** (markdown) are lower-risk than **plugins with hooks / MCP servers** (they execute code / connect to real accounts). Read hooks/scripts before enabling; give MCP servers minimal scope.
+- **Don't stack overlapping skills.**
+- Install on the user's confirmation — never silently. Skip the ceremony for one-off / throwaway scripts.
