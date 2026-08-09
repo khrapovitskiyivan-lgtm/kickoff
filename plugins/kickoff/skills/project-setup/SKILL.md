@@ -1,6 +1,6 @@
 ---
 name: project-setup
-description: Use when setting up a new project or auditing an existing one for the right agent tooling — which Claude Code skills, plugins, MCP servers, and hooks to add for the detected stack, with a vet-before-install safety pass. Pairs with spec-first for new projects. Not a replacement for deep analysis (see the official claude-code-setup plugin).
+description: Use when starting, planning, creating, or scaffolding a project, or when setting up, auditing, or strengthening an existing one — to choose the right agent tooling (Claude Code skills, plugins, MCP servers, hooks) for the detected stack, with a vet-before-install safety pass. Triggers on "new project", "set up", "get started", "what should I install", "strengthen my project". Pairs with spec-first for new projects. Not a replacement for deep analysis (see the official claude-code-setup plugin).
 ---
 
 # Project setup — recommend & equip (safely)

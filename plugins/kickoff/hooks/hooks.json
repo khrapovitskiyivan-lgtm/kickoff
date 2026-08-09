@@ -1,0 +1,15 @@
+{
+  "description": "On session start, prime Claude to proactively offer the kickoff flow when the user is setting up or strengthening a project.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks-handlers/session-start.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
