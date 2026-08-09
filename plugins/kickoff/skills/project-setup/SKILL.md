@@ -60,3 +60,17 @@ don't reinvent it here.
 - **Skills** (markdown) are lower-risk than **plugins with hooks / MCP servers** (they execute code / connect to real accounts). Read hooks/scripts before enabling; give MCP servers minimal scope.
 - **Don't stack overlapping skills.**
 - Install on the user's confirmation — never silently. Skip the ceremony for one-off / throwaway scripts.
+
+## Track the process — the ledger
+
+Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat and progress is visible over time.
+- **Before** a pass: read it. Skip anything marked `installed` or `declined`; surface still-`open` items.
+- **After** a pass: append a dated entry. Create the file on the first pass.
+- Format:
+  ```
+  ## <YYYY-MM-DD>
+  - installed: <tool> (<dimension>)
+  - open: <tool> (<dimension>) — <why it's worth adding>
+  - declined: <tool> — <reason>
+  ```
+It's a plain note — safe to commit (team-visible history) or gitignore (personal). Never write secrets into it.
