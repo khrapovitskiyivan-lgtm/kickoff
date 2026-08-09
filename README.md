@@ -7,7 +7,7 @@ instead of chasing "install this, install that" tutorials.
 ## Install (one time)
 
 ```bash
-claude plugin marketplace add <this-repo-url>
+claude plugin marketplace add https://github.com/khrapovitskiyivan-lgtm/kickoff
 claude plugin install kickoff@kickoff
 ```
 
@@ -34,10 +34,9 @@ Everything is **vet-before-install**: it flags which additions execute code (hoo
 - **`project-setup`** skill — an opinionated tooling baseline by stack + a vetting checklist.
 - **`/kickoff:start`** — the entry command.
 
-## Make it yours
+## Fork it
 
-Before sharing: set `owner` in `.claude-plugin/marketplace.json` and `author` in
-`plugins/kickoff/.claude-plugin/plugin.json`, and replace `<this-repo-url>` above
-after pushing to your own Git host.
+To republish under a different account, update `owner` in `.claude-plugin/marketplace.json`,
+`author` in `plugins/kickoff/.claude-plugin/plugin.json`, and the marketplace URL above.
 
 MIT.
