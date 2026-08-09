@@ -9,6 +9,10 @@ Goal: recommend what **this** project actually needs — discovered by analysis,
 limited to a fixed list**. The baseline below is a fast starting prior, NOT a ceiling.
 When a need isn't in it, go find the right tool.
 
+**Cold start (just an idea — no stack or code yet):** do NOT recommend stack-specific
+tooling. First shape the idea and **choose the stack** via `superpowers:brainstorming`,
+then `spec-first`. This skill's tooling recommendations apply only once a stack exists.
+
 ## Step 1 — Analyze the project's real needs (not just its stack)
 
 Read the code and config (`package.json`, `requirements.txt`, `pyproject.toml`,
