@@ -16,6 +16,12 @@ only once a stack exists.
 
 ## Step 1 — Analyze needs across EVERY dimension (no skipping)
 
+**First, inventory what already exists — never duplicate it.** Run `claude plugin list`
+and `claude mcp list` (installed plugins / MCP servers), note the available skills, read the
+project's dependencies (`package.json` / `requirements.txt` / etc.), and read the ledger. If a
+need is already met by an installed tool or an existing dependency, mark it "already covered"
+and do NOT re-recommend it.
+
 Read the code/config (`package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`,
 `.git`, CI files, `Dockerfile`, tests). Then walk **each** dimension and state the concrete
 need or gap — even if the answer is "already covered" or "n/a". Cover at least:
