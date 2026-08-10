@@ -1,80 +1,80 @@
 ---
 name: project-setup
-description: Use when starting, planning, or scaffolding a project, or setting up / auditing / strengthening an existing one — analyze what the project actually needs across every dimension (code intelligence, testing, data, frontend quality, security, delivery, monitoring, docs, collaboration), then recommend and vet the right agent tooling. Use a curated baseline as a fast prior but actively discover beyond it via skills.sh and the official claude-code-setup. Triggers on "new project", "set up", "get started", "what should I install", "strengthen my project".
+description: Use when starting, planning, or scaffolding a project, or setting up / auditing / strengthening an existing one — analyze what the project actually needs across every dimension (code intelligence, testing, data, frontend quality, security, delivery, observability, performance, i18n, background jobs, docs, collaboration), then recommend the best-fit tooling from the whole ecosystem and vet it. The built-in examples are orientation, not a menu. Triggers on "new project", "set up", "get started", "what should I install", "strengthen my project".
 ---
 
-# Project setup — analyze needs first, then equip (safely)
+# Project setup — analyze needs, discover the right tools, then equip (safely)
 
-Goal: recommend what **this** project actually needs — discovered by analysis, **not
-limited to a fixed list**. The baseline below is a fast starting prior, NOT a ceiling.
-When a need isn't in it, go find the right tool.
+Recommend what **this** project actually needs. **Derive every recommendation from a
+needs analysis + your own current knowledge of the whole ecosystem — never just copy a
+fixed list.** The examples table at the bottom is orientation, NOT the menu; most good
+recommendations will NOT be in it.
 
-**Cold start (just an idea — no stack or code yet):** do NOT recommend stack-specific
-tooling. First shape the idea and **choose the stack** via `superpowers:brainstorming`,
-then `spec-first`. This skill's tooling recommendations apply only once a stack exists.
+**Cold start (just an idea — no stack yet):** do NOT recommend tooling. Shape the idea and
+**choose the stack** via `superpowers:brainstorming`, then `spec-first`. Tooling applies
+only once a stack exists.
 
-## Step 1 — Analyze the project's real needs (not just its stack)
+## Step 1 — Analyze needs across EVERY dimension (no skipping)
 
-Read the code and config (`package.json`, `requirements.txt`, `pyproject.toml`,
-`go.mod`, `.git`, framework configs, CI files, `Dockerfile`, tests dir). Then name the
-concrete **gaps** across these dimensions — the actual needs, e.g.:
+Read the code/config (`package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`,
+`.git`, CI files, `Dockerfile`, tests). Then walk **each** dimension and state the concrete
+need or gap — even if the answer is "already covered" or "n/a". Cover at least:
 
-- **Code intelligence** — language-server / type support present? fresh library docs?
-- **Testing** — any tests? E2E for the UI? coverage on critical logic?
-- **Data** — how does it talk to its DB? migrations? typed access?
-- **Frontend quality** — perf / Core Web Vitals / a11y for a user-facing UI?
-- **Security** — handles auth / PII / payments? any review in place?
-- **Delivery** — CI? a deploy target? containerization?
-- **Observability** — error monitoring in production?
-- **Docs / ingest** — needs to read external documents (.docx/.pdf/…)?
-- **Collaboration** — PR / issue workflow?
+- **code intelligence** · **testing** (unit + E2E + contract) · **data / DB access** ·
+  **frontend quality** (perf / CWV / a11y / SEO) · **security & privacy** (auth, PII, secrets,
+  dependency vulns) · **delivery** (CI, deploy, containers) · **observability** (errors, logs,
+  metrics) · **performance** (caching, rate limiting) · **background work** (jobs, queues, cron)
+  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **+ anything the project implies**.
 
-For a **deep, per-category analysis of an existing codebase, run the official
-`claude-code-setup`** (the specialized read-only analyzer) and fold its findings in —
-don't reinvent it here.
+Name **real gaps beyond the obvious stack tools** (rate limiting? i18n? CI? queues? caching?
+secret scanning?). For a deep, per-category analysis, **run the official `claude-code-setup`**
+if it's available (offer to install it if not) and fold its findings in.
 
-## Step 2 — For each identified need, find the best-fit tooling
+## Step 2 — For EACH gap, find the best-fit tool from ANYWHERE
 
-1. Check the **baseline** below — a fast, already-vetted prior.
-2. If the need isn't covered there, **actively discover — do NOT stop at this list**:
-   - search the live directory: `npx skills find "<the need>"` (skills.sh),
-   - check marketplaces / the official plugin directory,
-   - use your own current knowledge of the ecosystem,
-   - and surface what `claude-code-setup` recommends.
-3. The right answer is **whatever fits the analyzed need**, from anywhere — the baseline
-   is just the shortcut for common cases.
+**Do NOT default to the examples table.** For each need, in this order:
+1. **Reason from your full, current knowledge** of the ecosystem. The right answer is often an
+   npm/pip **library**, an **MCP server**, or a **community skill** that is in none of our lists.
+   You are not limited to Claude Code plugins — name the tool that actually fits.
+2. **Actively search** when unsure: `npx skills find "<the need>"` (skills.sh), the marketplaces
+   / official directory, and whatever `claude-code-setup` surfaced.
+3. Use the examples table **only** as a sanity cross-check for common cases.
 
-## Baseline (fast prior for common needs — not exhaustive)
+Name concrete tools (exact names), each tagged: *from-knowledge* / *discovered* / *example*.
 
-| Dimension | When it applies | Common default | Note |
-|---|---|---|---|
-| Code intelligence | any TS/JS or Python | `typescript-lsp` / `pyright-lsp`; `context7` | official |
-| Testing (E2E) | web UI / browser flows | `playwright` | official |
-| Database / data | Supabase / Prisma / Postgres | `supabase` / `prisma` / Neon MCP | vendor MCP — token, minimal scope |
-| Frontend quality & design | React/Next/Vue/Svelte/Tailwind | `web-quality-skills`, official `frontend-design` | reputable / official |
-| Security & governance | auth / PII / payments | `security-guidance`, `/security-review`; (adv.) `Strix` | Strix third-party + niche — vet |
-| Deployment / infra | deploys to a host | `vercel` / `railway` / `render` MCP; Docker / Terraform | vendor — vet / token |
-| Monitoring | in production | `sentry` | needs a DSN / auth |
-| Docs / ingest | .docx / .pdf / .pptx | `markitdown` MCP (official Microsoft) | official |
-| Version control | GitHub remote | `github` | needs a token |
-| Methodology | multi-module project | `spec-first` (this kit) | ours |
-
-## Step 3 — Vet, then recommend / install
-- Prefer **reputable authors / official** sources; treat "top-N you must install" lists as **leads, not gospel** — identify and vet each item.
-- **Skills** (markdown) are lower-risk than **plugins with hooks / MCP servers** (they execute code / connect to real accounts). Read hooks/scripts before enabling; give MCP servers minimal scope.
-- **Don't stack overlapping skills.**
-- Install on the user's confirmation — never silently. Skip the ceremony for one-off / throwaway scripts.
+## Step 3 — Vet, then recommend / install on confirmation
+- Prefer **reputable / official**; treat "top-N you must install" lists as **leads, not gospel**.
+- **Skills** (markdown) are lower-risk than **plugins with hooks / MCP servers** (they execute
+  code / connect to accounts) — read hooks/scripts before enabling; give MCP servers minimal scope.
+- **Don't stack overlapping skills.** Install only on the user's confirmation. Skip one-off scripts.
 
 ## Track the process — the ledger
 
-Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat and progress is visible over time.
-- **Before** a pass: read it. Skip anything marked `installed` or `declined`; surface still-`open` items.
-- **After** a pass: append a dated entry. Create the file on the first pass.
-- Format:
+Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat and progress is visible.
+- **Before** a pass: read it. Skip anything `installed` or `declined`; surface still-`open` items; re-surface a `declined` item if its reason no longer holds.
+- **After** a pass: append a dated entry (create the file on first pass). Format:
   ```
   ## <YYYY-MM-DD>
   - installed: <tool> (<dimension>)
-  - open: <tool> (<dimension>) — <why it's worth adding>
+  - open: <tool> (<dimension>) — <why>
   - declined: <tool> — <reason>
   ```
-It's a plain note — safe to commit (team-visible history) or gitignore (personal). Never write secrets into it.
+Never write secrets into it.
+
+## Examples — orientation only, NOT the menu
+
+A few common defaults per dimension. **Not exhaustive; most recommendations should come from
+Step 2, not here.**
+
+| Dimension | Common example | Note |
+|---|---|---|
+| Code intelligence | `typescript-lsp` / `pyright-lsp`; `context7` | official |
+| Testing (E2E) | `playwright` (browser); for headless APIs prefer contract/HTTP tools (e.g. Supertest, Schemathesis) | discover per project |
+| Database | `supabase` / `prisma` / Neon MCP | vendor — token |
+| Frontend quality | `web-quality-skills`, `frontend-design` | reputable |
+| Security | `security-guidance`, `/security-review`; secret scanning (gitleaks); dep audit | discover per project |
+| Deployment / CI | `vercel` / `railway` / `render`; Docker; GitHub Actions | vendor / per host |
+| Observability | `sentry` | needs DSN |
+| Docs / ingest | `markitdown` MCP | official |
+| Version control | `github` | needs token |
+| Methodology | `spec-first` (this kit) | ours |
