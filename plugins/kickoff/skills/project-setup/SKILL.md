@@ -30,7 +30,8 @@ need or gap — even if the answer is "already covered" or "n/a". Cover at least
   **frontend quality** (perf / CWV / a11y / SEO) · **security & privacy** (auth, PII, secrets,
   dependency vulns) · **delivery** (CI, deploy, containers) · **observability** (errors, logs,
   metrics) · **performance** (caching, rate limiting) · **background work** (jobs, queues, cron)
-  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **+ anything the project implies**.
+  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **token / cost efficiency**
+  (auto-compact, model routing by task class, subagents for heavy reads) · **+ anything the project implies**.
 
 Name **real gaps beyond the obvious stack tools** (rate limiting? i18n? CI? queues? caching?
 secret scanning?). For a deep, per-category analysis, **run the official `claude-code-setup`**
@@ -84,3 +85,4 @@ Step 2, not here.**
 | Docs / ingest | `markitdown` MCP | official |
 | Version control | `github` | needs token |
 | Methodology | `spec-first` (this kit) | ours |
+| Token / cost efficiency | **auto-compact** (native, free: `autoCompactEnabled` + `precomputeCompactionEnabled`), model routing by task class, subagents for heavy reads, trim unused plugins; (heavy) `headroom` proxy | mostly free settings/practices — recommend before any paid option |
