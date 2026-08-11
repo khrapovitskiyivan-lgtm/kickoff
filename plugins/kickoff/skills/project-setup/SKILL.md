@@ -50,6 +50,7 @@ if it's available (offer to install it if not) and fold its findings in.
 Name concrete tools (exact names), each tagged: *from-knowledge* / *discovered* / *example*.
 
 ## Step 3 — Vet, then recommend / install on confirmation
+- **Prefer free / open-source. Do NOT recommend paid plans or paid products** — where a service is genuinely needed, use its free tier only.
 - Prefer **reputable / official**; treat "top-N you must install" lists as **leads, not gospel**.
 - **Skills** (markdown) are lower-risk than **plugins with hooks / MCP servers** (they execute
   code / connect to accounts) — read hooks/scripts before enabling; give MCP servers minimal scope.
@@ -85,4 +86,4 @@ Step 2, not here.**
 | Docs / ingest | `markitdown` MCP | official |
 | Version control | `github` | needs token |
 | Methodology | `spec-first` (this kit) | ours |
-| Token / cost efficiency | **auto-compact** (native, free: `autoCompactEnabled` + `precomputeCompactionEnabled`), model routing by task class, subagents for heavy reads, trim unused plugins; (heavy) `headroom` proxy | mostly free settings/practices — recommend before any paid option |
+| Token / cost efficiency | **auto-compact** (native, free: `autoCompactEnabled` + `precomputeCompactionEnabled`), model routing by task class, subagents for heavy reads, trim unused plugins | all free native settings / practices |
