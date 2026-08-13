@@ -61,6 +61,12 @@ Restart Claude Code so both load.
 - `/kickoff:start`, `/kickoff:checkup` — commands.
 - A SessionStart primer for proactive, non-naggy activation.
 
+## Examples
+
+Worked outputs on one running example (a small Leads-intake API) — a filled 6-block spec, a
+checkup coverage scorecard + ledger, and the config kickoff writes on confirmation. See
+[`examples/`](examples/README.md).
+
 ## Fork it
 
 To republish under a different account, update `owner` in `.claude-plugin/marketplace.json`,
