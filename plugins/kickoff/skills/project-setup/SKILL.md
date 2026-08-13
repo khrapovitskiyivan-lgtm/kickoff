@@ -28,7 +28,9 @@ need or gap — even if the answer is "already covered" or "n/a". Cover at least
 
 - **code intelligence** · **testing** (unit + E2E + contract) · **data / DB access** ·
   **frontend quality** (perf / CWV / a11y / SEO) · **security & privacy** (auth, PII, secrets,
-  dependency vulns) · **delivery** (CI, deploy, containers) · **observability** (errors, logs,
+  dependency vulns; **if the project calls an LLM / handles prompts** → OWASP **LLM Top 10**:
+  prompt injection, secret/PII leakage into prompts, unsafe LLM-output handling) ·
+  **delivery** (CI, deploy, containers) · **observability** (errors, logs,
   metrics) · **performance** (caching, rate limiting) · **background work** (jobs, queues, cron)
   · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **token / cost efficiency**
   (auto-compact, model routing by task class, subagents for heavy reads) · **+ anything the project implies**.
@@ -71,6 +73,11 @@ crystallize the vet — never write silently, never overwrite:
 - **CLAUDE.md stub (light, only if wanted).** Only when the project lacks one and the user asks:
   a short stub (stack + key conventions). Keep it minimal — `/init` owns full project docs; do
   **not** overwrite an existing `CLAUDE.md`.
+- **Quality-gate config (optional).** Offer a vetted, stack-appropriate **pre-commit gate**
+  (lint + typecheck + test), a **conventional-commit** check, and **git-safety** guardrails
+  (block force-push to `main`, block `--no-verify`). Emit config only — the enforcement layer is
+  the natural sibling of the allowlist, not code scaffolding. Match the stack's own tool (husky +
+  lint-staged / pre-commit / lefthook); **merge**, don't clobber; tag each line by risk.
 
 Write nothing without an explicit yes. Record what was written in the ledger.
 
@@ -84,6 +91,14 @@ Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat
   - installed: <tool> (<dimension>)
   - open: <tool> (<dimension>) — <why>
   - declined: <tool> — <reason>
+  ```
+- **Coverage scorecard** (record on a checkup): a compact per-dimension snapshot so successive
+  passes show movement — the next checkup diffs against the last one:
+  ```
+  ### Scorecard <YYYY-MM-DD>
+  | dimension | status (covered/gap/n-a) | tool | priority |
+  |---|---|---|---|
+  | testing | gap | vitest | high |
   ```
 Never write secrets into it.
 
@@ -99,6 +114,7 @@ Step 2, not here.**
 | Database | `supabase` / `prisma` / Neon MCP | vendor — token |
 | Frontend quality | `web-quality-skills`, `frontend-design` | reputable |
 | Security | `security-guidance`, `/security-review`; secret scanning (gitleaks); dep audit | discover per project |
+| Security (AI/LLM) | `security-guidance`, `/security-review` against OWASP LLM Top 10 (prompt injection, prompt leakage, unsafe output) | only if it calls an LLM |
 | Deployment / CI | `vercel` / `railway` / `render`; Docker; GitHub Actions | vendor / per host |
 | Observability | `sentry` | needs DSN |
 | Docs / ingest | `markitdown` MCP | official |
