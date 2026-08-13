@@ -43,8 +43,10 @@ if it's available (offer to install it if not) and fold its findings in.
 1. **Reason from your full, current knowledge** of the ecosystem. The right answer is often an
    npm/pip **library**, an **MCP server**, or a **community skill** that is in none of our lists.
    You are not limited to Claude Code plugins — name the tool that actually fits.
-2. **Actively search** when unsure: `npx skills find "<the need>"` (skills.sh), the marketplaces
-   / official directory, and whatever `claude-code-setup` surfaced.
+2. **Actively search** when unsure — name the concrete discovery path per tool kind:
+   - **skills / plugins**: `npx skills find "<the need>"` (skills.sh), the plugin marketplaces, and whatever `claude-code-setup` surfaced.
+   - **MCP servers**: search a real registry, not a vague "directory" — the official MCP registry and **Smithery** (`smithery.ai`) as leads; if an in-session MCP-registry search / connector-suggest tool is available, use it. Then vet scope (Step 3).
+   - **libraries**: the language's package index (npm / PyPI / crates.io / pkg.go.dev), filtered to maintained, reputable packages.
 3. Use the examples table **only** as a sanity cross-check for common cases.
 
 Name concrete tools (exact names), each tagged: *from-knowledge* / *discovered* / *example*.
@@ -55,6 +57,22 @@ Name concrete tools (exact names), each tagged: *from-knowledge* / *discovered* 
 - **Skills** (markdown) are lower-risk than **plugins with hooks / MCP servers** (they execute
   code / connect to accounts) — read hooks/scripts before enabling; give MCP servers minimal scope.
 - **Don't stack overlapping skills.** Install only on the user's confirmation. Skip one-off scripts.
+- **Preview before acting.** Before writing or installing anything, present the full proposed plan
+  — the spec/tooling list, each item tagged by risk (skill vs code-executing hook/MCP) — and get one approval.
+
+## Step 4 — Turn the vet into a durable artifact (optional, on confirmation)
+
+Vetting that leaves no trace evaporates. Once the user confirms what to equip, **offer** to
+crystallize the vet — never write silently, never overwrite:
+- **Permission allowlist (primary).** Write / extend `.claude/settings.json` with a scoped
+  `permissions.allow` list for exactly the vetted tools and their commands — approved tooling then
+  runs without re-prompting, and nothing else is implicitly trusted. **Merge** into any existing
+  file; never clobber it. This is the natural *output* of the vet, not code scaffolding.
+- **CLAUDE.md stub (light, only if wanted).** Only when the project lacks one and the user asks:
+  a short stub (stack + key conventions). Keep it minimal — `/init` owns full project docs; do
+  **not** overwrite an existing `CLAUDE.md`.
+
+Write nothing without an explicit yes. Record what was written in the ledger.
 
 ## Track the process — the ledger
 

@@ -7,4 +7,6 @@ Ask the user whether this is a **new** project or an **existing** one, then:
 - **New / empty folder / just an idea** → be proactive: if there is no code and no design yet, first **ASK what they are building** — don't stay silent — then shape it with `superpowers:brainstorming` (problem, users, MVP scope, and the stack choice); THEN `spec-first` (track selector → 6-block spec); THEN `project-setup` (equip the chosen stack). Do NOT recommend stack tooling before a stack exists.
 - **Existing** → follow the `project-setup` skill: detect the stack, recommend what is missing from the house baseline, suggest running the official `claude-code-setup` plugin for deeper analysis, and vet before installing.
 
+Before writing or installing anything, present the **full proposed plan** (spec + tooling list, each item tagged by risk) and get one approval — don't act tool-by-tool.
+
 Keep it lightweight; skip the ceremony for one-off / throwaway scripts.

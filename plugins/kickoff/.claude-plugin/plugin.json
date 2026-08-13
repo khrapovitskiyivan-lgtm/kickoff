@@ -1,7 +1,7 @@
 {
   "name": "kickoff",
   "description": "Kick off new projects with a spec-first flow and equip new or existing projects with the right, vetted Claude Code tooling.",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "author": { "name": "khrapovitskiyivan-lgtm" },
   "license": "MIT"
 }

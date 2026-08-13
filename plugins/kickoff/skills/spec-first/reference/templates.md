@@ -37,6 +37,9 @@
    schemas, events) that must NOT break.
 3. Specify ONLY the change + its impact on adjacent contracts. Do not rewrite
    working code.
+4. Capture house **conventions** — sample the lint/format config (eslint / prettier /
+   ruff / gofmt / rustfmt), naming patterns, and directory layout — and record them in
+   `CLAUDE.md` so later specs and tooling recommendations match the existing style.
 
 ## Drift-check checklist (finish phase)
 
