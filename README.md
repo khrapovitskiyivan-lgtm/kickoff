@@ -1,9 +1,6 @@
 # kickoff
 
-A shareable Claude Code starter kit. It helps you **plan a project** (spec-first) and
-**equip new or existing projects** with the right, *vetted* Claude Code tooling — and it
-**activates on its own** when you're setting up a project, so there's no command to
-remember. An antidote to "install this, install that" tutorials.
+A shareable Claude Code starter kit. Run /kickoff:start to plan a project spec-first, or audit an existing one and equip it with vetted tooling matched to your stack — across every dimension (testing, security incl. LLM risks, delivery…). On your OK it writes a scoped permissions allowlist + quality-gate config. A calmer alternative to "install this, install that" tutorials.
 
 ## Install (one time)
 
