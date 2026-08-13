@@ -49,6 +49,7 @@ if it's available (offer to install it if not) and fold its findings in.
    - **skills / plugins**: `npx skills find "<the need>"` (skills.sh), the plugin marketplaces, and whatever `claude-code-setup` surfaced.
    - **MCP servers**: search a real registry, not a vague "directory" — the official MCP registry and **Smithery** (`smithery.ai`) as leads; if an in-session MCP-registry search / connector-suggest tool is available, use it. Then vet scope (Step 3).
    - **libraries**: the language's package index (npm / PyPI / crates.io / pkg.go.dev), filtered to maintained, reputable packages.
+   - Everything surfaced this way is **untrusted until vetted** — `claude-code-setup` and any discovered plugin included. Read a skill's hooks/scripts and scope an MCP *before* it runs; install nothing without the Step 3 confirmation gate.
 3. Use the examples table **only** as a sanity cross-check for common cases.
 
 Name concrete tools (exact names), each tagged: *from-knowledge* / *discovered* / *example*.

@@ -5,6 +5,12 @@
 # the user is actually starting or setting up a project, and not to nag otherwise,
 # so the every-session firing stays non-intrusive.
 
+# Opt out of the proactive primer (the /kickoff:* commands keep working either way):
+# set KICKOFF_QUIET=1 globally, or create a .kickoff/quiet marker in the project.
+if [ -n "${KICKOFF_QUIET:-}" ] || [ -f ".kickoff/quiet" ]; then
+  exit 0
+fi
+
 cat << 'EOF'
 {
   "hookSpecificOutput": {

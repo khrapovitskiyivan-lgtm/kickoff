@@ -27,6 +27,8 @@ Restart Claude Code so both load.
 - **On its own** — a SessionStart primer makes Claude proactively offer the flow when
   you're starting or strengthening a project (and stays quiet on unrelated work).
 - **Or explicitly** — `/kickoff:start` (set up) and `/kickoff:checkup` (strengthen).
+- **Mute the primer** — set `KICKOFF_QUIET=1` (global) or drop a `.kickoff/quiet` file in a
+  project to silence the proactive nudge; the `/kickoff:*` commands keep working.
 
 ## What it does
 

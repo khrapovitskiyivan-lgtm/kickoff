@@ -1,7 +1,7 @@
 {
   "name": "kickoff",
-  "description": "Kick off new projects with a spec-first flow and equip new or existing projects with the right, vetted Claude Code tooling.",
-  "version": "0.3.8",
+  "description": "Kick off new projects spec-first and equip new or existing ones with the right, vetted Claude Code tooling (needs analysis across every dimension, incl. OWASP LLM Top 10) — then, on confirmation, write a scoped permissions allowlist + quality-gate config.",
+  "version": "0.3.9",
   "author": { "name": "khrapovitskiyivan-lgtm" },
   "license": "MIT"
 }
