@@ -120,4 +120,4 @@ Step 2, not here.**
 | Docs / ingest | `markitdown` MCP | official |
 | Version control | `github` | needs token |
 | Methodology | `spec-first` (this kit) | ours |
-| Token / cost efficiency | **auto-compact** (native, free: `autoCompactEnabled` + `precomputeCompactionEnabled`), a **context-usage status line** with a near-limit `/clear` hint (`reference/statusline.sh`), model routing by task class, subagents for heavy reads, trim unused plugins | all free native settings / practices |
+| Token / cost efficiency | **auto-compact** (native, free: `autoCompactEnabled` + `precomputeCompactionEnabled`), a **context-usage status line** with a near-limit `/clear` hint (the plugin's `reference/statusline.sh`, i.e. `../../reference/statusline.sh` from here), model routing by task class, subagents for heavy reads, trim unused plugins | all free native settings / practices |

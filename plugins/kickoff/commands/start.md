@@ -2,6 +2,8 @@
 description: Kick off — set up a new project (spec-first) or audit an existing one for the right tooling.
 ---
 
+**Prerequisite check (new-project path):** the planning flow drives `superpowers:*` skills. If they aren't installed, tell the user to add the Superpowers plugin first — `claude plugin marketplace add obra/superpowers-marketplace` then `claude plugin install superpowers@superpowers-marketplace` — and pause until it's in. The **existing**/equip path below works without it.
+
 Ask the user whether this is a **new** project or an **existing** one, then:
 
 - **New / empty folder / just an idea** → be proactive: if there is no code and no design yet, first **ASK what they are building** — don't stay silent — then shape it with `superpowers:brainstorming` (problem, users, MVP scope, and the stack choice); THEN `spec-first` (track selector → 6-block spec); THEN `project-setup` (equip the chosen stack). Do NOT recommend stack tooling before a stack exists.

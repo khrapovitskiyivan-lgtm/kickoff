@@ -10,6 +10,13 @@ replace that flow — it inserts five deltas at named phases. Load it once at th
 start of project/module work and keep it active; **never invoke it as a step
 "after brainstorming."**
 
+> **Prerequisite — Superpowers.** This overlay drives the `superpowers:*` skills named in the
+> table below; it cannot run without them. If those skills are not installed, **stop and tell
+> the user** to install the Superpowers plugin first —
+> `claude plugin marketplace add obra/superpowers-marketplace` then
+> `claude plugin install superpowers@superpowers-marketplace` — rather than calling a skill that
+> isn't there.
+
 Operational extract of a Spec-First methodology. Living document — update when
 practice diverges. Last-reviewed: 2026-08-09.
 

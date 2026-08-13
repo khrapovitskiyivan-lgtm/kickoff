@@ -7,12 +7,23 @@ remember. An antidote to "install this, install that" tutorials.
 
 ## Install (one time)
 
+> **Prerequisite — [Superpowers](https://github.com/obra/superpowers).** kickoff's planning
+> and build flow (`spec-first`, `/kickoff:start`) is an **overlay** on the Superpowers
+> brainstorm → plan → build → verify skills — install it too, or those steps will call skills
+> that aren't there. (The equip side — `/kickoff:checkup` and tooling recommendations — works
+> without it.)
+
 ```bash
+# Prerequisite: Superpowers (powers brainstorm → plan → build → verify)
+claude plugin marketplace add obra/superpowers-marketplace
+claude plugin install superpowers@superpowers-marketplace
+
+# kickoff
 claude plugin marketplace add https://github.com/khrapovitskiyivan-lgtm/kickoff
 claude plugin install kickoff@kickoff
 ```
 
-Restart Claude Code so it loads.
+Restart Claude Code so both load.
 
 ## How it activates
 
