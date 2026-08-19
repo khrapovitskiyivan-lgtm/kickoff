@@ -2,6 +2,13 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.7.1
+- **Verify, don't trust.** The ledger records what was *decided*, not what is *still true*.
+  Entries claiming a concrete artifact (file, config, hook, backup, enabled setting) are now
+  checked against reality before counting as done — a decayed `done` item outranks any new
+  recommendation. Found by dogfooding a checkup on a real project: a backup recorded as done
+  had been written to a temp directory and was gone days later, leaving no copy at all.
+
 ## 0.7.0
 - **First-contact pass for existing projects.** `/kickoff:start` on a brownfield project is now
   a real onboarding pass — reverse-spec the code, capture conventions, analyze every dimension,

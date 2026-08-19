@@ -88,6 +88,12 @@ Write nothing without an explicit yes. Record what was written in the ledger.
 
 Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat and progress is visible.
 - **Before** a pass: read it. Skip anything `installed` or `declined`; surface still-`open` items; re-surface a `declined` item if its reason no longer holds.
+- **Verify, don't trust.** The ledger records what was *decided*, not what is *still true*. For any
+  entry that claims a **concrete artifact** — a file, a config, a hook, a backup, an enabled
+  setting — **check it actually exists** before treating it as done; a `done` item that has since
+  decayed is worth more than any new recommendation. Say so plainly when one has rotted, and
+  move it back to `open` with what happened. (Seen in the wild: a backup recorded as done lived
+  in a temp directory and was gone days later, leaving the project with no copy at all.)
 - **After** a pass: append a dated entry (create the file on first pass). Format:
   ```
   ## <YYYY-MM-DD>
