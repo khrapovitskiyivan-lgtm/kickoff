@@ -28,9 +28,11 @@ need or gap — even if the answer is "already covered" or "n/a". Cover at least
 
 - **code intelligence** · **testing** (unit + E2E + contract) · **data / DB access** ·
   **frontend quality** (perf / CWV / a11y / SEO) · **security & privacy** (auth, PII, secrets,
-  dependency vulns; **if the project calls an LLM / handles prompts** → OWASP **LLM Top 10**:
-  prompt injection, secret/PII leakage into prompts, unsafe LLM-output handling) ·
-  **delivery** (CI, deploy, containers) · **observability** (errors, logs,
+  dependency vulns; **web-facing app** → walk the concrete `reference/security-baseline.md`
+  — auth/brute-force, IDOR, server-side authz, datastore RLS, injection, file uploads, secret
+  exposure, webhook forgery, race conditions, paid-API cost, CORS; **if it calls an LLM /
+  handles prompts** → OWASP **LLM Top 10**: prompt injection, secret/PII leakage into prompts,
+  unsafe LLM-output handling) · **delivery** (CI, deploy, containers) · **observability** (errors, logs,
   metrics) · **performance** (caching, rate limiting) · **background work** (jobs, queues, cron)
   · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **token / cost efficiency**
   (auto-compact, model routing by task class, subagents for heavy reads) · **+ anything the project implies**.
