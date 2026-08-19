@@ -47,7 +47,7 @@ Restart Claude Code so both load.
   what you installed or declined; re-surfaces an item whose decline reason has changed).
 
 **`/kickoff:security` — deep security pass (web projects)**
-- Walks the 15-item web-app security baseline **one item at a time** — brute-force, IDOR,
+- Walks the 28-item web-app security baseline **one item at a time** — brute-force, IDOR,
   server-side authz, datastore RLS, injection, uploads, secrets, webhook forgery, race
   conditions, paid-API cost, CORS — and reports a scorecard with `file:line` evidence per item.
 - Focused by design: `checkup` sweeps every dimension broadly, this one goes deep on security.
@@ -70,7 +70,7 @@ Restart Claude Code so both load.
 - `spec-first` skill — methodology overlay (track selector, 6-block spec, reverse-spec for
   legacy code, living-spec / drift control).
 - `project-setup` skill — analysis-first tooling recommendation by project dimension +
-  vetting + the ledger; includes a 15-item web-app **security baseline**.
+  vetting + the ledger; includes a 28-item web-app **security baseline**.
 - `/kickoff:start`, `/kickoff:checkup`, `/kickoff:security` — commands.
 - A SessionStart primer for proactive, non-naggy activation.
 
