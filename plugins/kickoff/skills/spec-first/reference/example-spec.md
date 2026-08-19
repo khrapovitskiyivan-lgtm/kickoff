@@ -1,7 +1,7 @@
 # Example spec — Leads intake (FastAPI / Python)
 
-A filled instance of the 6-block skeleton (`spec-first` → `reference/templates.md`),
-stack-translated via the Python/FastAPI column of `reference/stack-adapters.md`.
+A filled instance of the 6-block skeleton (`spec-first` → `templates.md`),
+stack-translated via the Python/FastAPI column of `stack-adapters.md`.
 Track: **Spec** (all six blocks fillable without guessing).
 
 ## Module: leads-intake
@@ -36,6 +36,17 @@ outside the endpoint). PII (`phone`, `email`) never logged in plaintext.
 - Duplicate submit (same phone within 10 min) → 201 but no second match job (idempotent).
 - Matcher index cold/unavailable → `GET matches` returns `200 []`, not 500; job retried.
 - Burst from one IP → 429 after N/min.
+
+### Security / abuse
+- `POST /leads` is public by design; `GET /leads/{id}/matches` is **session-authenticated and
+  rep-scoped** — enforced in the service layer, not the handler, and it returns **404** for a lead
+  outside the caller's scope (403 would confirm the id exists).
+- Untrusted input reaching the server: the four `LeadCreate` fields. Bound by Pydantic; `note` is
+  escaped on render and never interpolated into HTML or SQL.
+- Cost of abuse: `POST /leads` is unauthenticated, so it is the DoS and spam surface — per-IP rate
+  limit (429) plus a per-day cap on enqueued match jobs, since each job costs an embedding call.
+- PII (`phone`, `email`) is never written to logs or error payloads, including the tracker's
+  breadcrumbs.
 
 ### Acceptance / observable-done
 - `POST /leads` with a valid payload returns `201` and the row exists in `leads`.

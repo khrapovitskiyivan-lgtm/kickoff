@@ -91,9 +91,12 @@ its reason stops holding), and `open` ones resurface next pass. Never put secret
 
 ## Examples
 
-Worked outputs on one running example (a small Leads-intake API) — a filled 6-block spec, a
-checkup coverage scorecard + ledger, and the config kickoff writes on confirmation. See
-[`examples/`](examples/README.md).
+Worked outputs on one running example (a small Leads-intake API) ship **inside the skills**, so
+the model reads them as it works rather than them sitting in a folder nothing loads:
+
+- [a filled 6-block spec](plugins/kickoff/skills/spec-first/reference/example-spec.md)
+- [a checkup + security scorecard and ledger entry](plugins/kickoff/skills/project-setup/reference/example-checkup.md)
+- [the config the equip step writes](plugins/kickoff/skills/project-setup/reference/example-equip.md)
 
 ## Fork it
 

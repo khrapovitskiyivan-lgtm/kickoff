@@ -70,8 +70,12 @@ object and where that is enforced — retrofitting authorization after the code 
 how the classic holes (IDOR, missing server-side authz, unguarded uploads) get shipped.
 
 Translate **Data Model, Security, API, Background, ML-inference** to your stack via
-`reference/stack-adapters.md` — **never default to Supabase**. Fillable skeleton +
-example: `reference/templates.md`.
+`reference/stack-adapters.md` — **never default to Supabase**. Fillable skeleton:
+`reference/templates.md`.
+
+**Before writing a spec, read `reference/example-spec.md`** — a filled spec for a small module —
+and match its level of concreteness. Blocks like "validate the input" are not specifications;
+that file shows what "concrete as code" actually means.
 
 ## 3. Brownfield: reverse-spec first
 

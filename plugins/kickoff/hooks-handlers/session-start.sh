@@ -6,8 +6,11 @@
 # so the every-session firing stays non-intrusive.
 
 # Opt out of the proactive primer (the /kickoff:* commands keep working either way):
-# set KICKOFF_QUIET=1 globally, or create a .kickoff/quiet marker in the project.
-if [ -n "${KICKOFF_QUIET:-}" ] || [ -f ".kickoff/quiet" ]; then
+# set KICKOFF_QUIET to any non-empty value globally, or create a .kickoff/quiet marker
+# in the project. The marker is resolved against CLAUDE_PROJECT_DIR, not the cwd — hooks
+# do not necessarily run from the project root (`cd src && claude`, monorepo subdirs,
+# --add-dir), and a mute that silently fails open is worse than none.
+if [ -n "${KICKOFF_QUIET:-}" ] || [ -f "${CLAUDE_PROJECT_DIR:-.}/.kickoff/quiet" ]; then
   exit 0
 fi
 

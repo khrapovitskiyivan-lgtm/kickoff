@@ -104,13 +104,14 @@ Write nothing without an explicit yes. Record what was written in the ledger.
 ## Track the process — the ledger
 
 Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat and progress is visible.
-- **Before** a pass: read it. Skip anything `installed` or `declined`; surface still-`open` items; re-surface a `declined` item if its reason no longer holds.
-- **Verify, don't trust.** The ledger records what was *decided*, not what is *still true*. For any
-  entry that claims a **concrete artifact** — a file, a config, a hook, a backup, an enabled
-  setting — **check it actually exists** before treating it as done; a `done` item that has since
-  decayed is worth more than any new recommendation. Say so plainly when one has rotted, and
-  move it back to `open` with what happened. (Seen in the wild: a backup recorded as done lived
-  in a temp directory and was gone days later, leaving the project with no copy at all.)
+- **Before a pass — verify first, then skip.** Read the ledger, then collect every filesystem path
+  or setting named by an `installed` entry and **check them all in one batch**. Emit the result as a
+  `verified / MISSING` list before recommending anything. **Only entries that verified may be
+  skipped.** The ledger records what was *decided*, not what is *still true*: a `done` item that has
+  since decayed outranks any new recommendation. Move each MISSING one back to `open`, saying what
+  happened. (Seen in the wild: a backup recorded as done lived in a temp directory and was gone days
+  later — the ledger still read "done" while the project had no copy at all.)
+- Then surface still-`open` items; re-surface a `declined` item if its reason no longer holds.
 - **After** a pass: append a dated entry (create the file on first pass). Format:
   ```
   ## <YYYY-MM-DD>
@@ -126,6 +127,9 @@ Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat
   |---|---|---|---|
   | testing | gap | vitest | high |
   ```
+  A worked pass — scorecard, ledger entry and the security scorecard it delegates to — is in
+  `reference/example-checkup.md`; the artifacts Step 4 writes are in `reference/example-equip.md`.
+  Match their shape and specificity.
 Never write secrets into it. **Add `.kickoff/` to `.gitignore` when you create it** — the ledger
 accumulates a `file:line` list of *unfixed* security gaps, which is exactly the artifact you don't
 want committed and pushed. The findings are the sensitive part, not just any secrets in them.
@@ -156,22 +160,10 @@ so this is the most guarded step in the skill. Default to not doing it.
 
 Skip the roll-up when it would be noise (a one-off script, or an unrelated project type).
 
-## Examples — orientation only, NOT the menu
+## Examples
 
-A few common defaults per dimension. **Not exhaustive; most recommendations should come from
-Step 2, not here.**
+Common defaults per dimension live in `reference/examples.md`. **Read it last, only to
+sanity-check what you already chose** — never to generate candidates.
 
-| Dimension | Common example | Note |
-|---|---|---|
-| Code intelligence | `typescript-lsp` / `pyright-lsp`; `context7` | official |
-| Testing (E2E) | `playwright` (browser); for headless APIs prefer contract/HTTP tools (e.g. Supertest, Schemathesis) | discover per project |
-| Database | `supabase` / `prisma` / Neon MCP | vendor — token |
-| Frontend quality | `web-quality-skills`, `frontend-design` | reputable |
-| Security | `security-guidance`, `/security-review`; secret scanning (gitleaks); dep audit | discover per project |
-| Security (AI/LLM) | `security-guidance`, `/security-review` against OWASP LLM Top 10 (prompt injection, prompt leakage, unsafe output) | only if it calls an LLM |
-| Deployment / CI | `vercel` / `railway` / `render`; Docker; GitHub Actions | vendor / per host |
-| Observability | `sentry` | needs DSN |
-| Docs / ingest | `markitdown` MCP | official |
-| Version control | `github` | needs token |
-| Methodology | `spec-first` (this kit) | ours |
-| Token / cost efficiency | **auto-compact** (native, free: `autoCompactEnabled` + `precomputeCompactionEnabled`), a **context-usage status line** with a near-limit `/clear` hint (ships with this plugin at `../../reference/statusline.sh`), model routing by task class, subagents for heavy reads, trim unused plugins, a **handoff note** (jot the current state + decisions into the spec/ledger before a long session compacts, so work-in-flight survives) | all free native settings / practices |
+Before finalizing, count your tags: **at most 2 recommendations may be tagged `example`.** A third
+means Step 2 was skipped for that gap — go back and search for it.

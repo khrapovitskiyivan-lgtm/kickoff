@@ -18,8 +18,13 @@ fast-built web projects have most often. Report findings; **fix nothing without 
    rather than inventing findings.
 2. **One item at a time, in baseline order.** Do NOT ask yourself "is this project secure" —
    that answers itself with "looks fine". For each item, go find the guard.
-3. **Demand evidence.** Every verdict cites `file:line` — where the guard lives, or the
-   exact place it's missing. A claim with no line is not a finding.
+3. **Cite only what you read this session.** A `guarded` verdict quotes the actual source line from
+   a Grep/Read result in *this* session, citation plus the text:
+   `db/leads.py:24 — "select(Lead).where(Lead.id == bindparam('id'))"`.
+   If you cannot paste the real text, the status is **`unverified`**, never `guarded` — do not
+   reconstruct line numbers from memory. A **gap** has no line, so it takes the other form: the
+   search you ran and its empty result — `grepped "rate|limit|throttle" across api/, 0 matches`.
+   A verdict with neither a quoted line nor a named empty search is not a finding; drop it.
 4. **Per module, not per repo.** On a large codebase, walk module by module; the more code
    judged at once, the more gets missed.
 5. **Compose, don't reinvent.** Use what already exists rather than hand-rolling a scanner:

@@ -38,6 +38,15 @@ if [ -z "$(KICKOFF_QUIET=1 bash plugins/kickoff/hooks-handlers/session-start.sh)
 else
   bad "KICKOFF_QUIET=1 did not silence the primer"
 fi
+# The marker is the fragile opt-out (path resolution), so it is the one that must be tested:
+# it must work from a directory OTHER than the project root.
+_tmp=$(mktemp -d) && mkdir -p "$_tmp/.kickoff" && touch "$_tmp/.kickoff/quiet"
+if [ -z "$(cd / && CLAUDE_PROJECT_DIR="$_tmp" bash "$OLDPWD/plugins/kickoff/hooks-handlers/session-start.sh" 2>/dev/null)" ]; then
+  note "ok   .kickoff/quiet marker silences it from any cwd"
+else
+  bad ".kickoff/quiet marker ignored when cwd is not the project root"
+fi
+rm -rf "$_tmp"
 
 echo "== frontmatter =="
 for f in plugins/kickoff/skills/*/SKILL.md plugins/kickoff/commands/*.md; do
