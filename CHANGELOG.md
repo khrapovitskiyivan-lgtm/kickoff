@@ -2,6 +2,37 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.10.0 — executability
+Rules a model reliably skips are worth nothing. **Verify now precedes skip** in the ledger pass
+(0.7.1's headline rule was dead: "skip anything installed" came first). The SessionStart hook got
+`matcher: startup` — with none it re-fired on every resume and compaction. `.kickoff/quiet` now
+resolves against `CLAUDE_PROJECT_DIR`, so the documented mute no longer fails open, and the
+self-check tests it. Worked examples moved **inside the skills** and are cited where they're needed
+— they were unreferenced and outside the shipped plugin. `file:line` evidence must now quote the
+line actually read (or, for a gap, the search that came back empty); anything else is `unverified`.
+The examples table moved out of the skill with a countable ceiling on how much of it may surface.
+
+## 0.9.0 — the advice itself
+Security baseline 15 → 28 items, after an expert found two wrong claims and ~14 omissions.
+**Removed:** "automode mitigates prompt injection" (false — no model setting makes injection safe);
+the "untouched >1 year = risky" dependency heuristic (finished libraries are fine; recent commits
+are what a hijacked package looks like). **Rewritten:** CORS — it is *not* an access control, and
+the old rule was a no-op; the real bug is a reflected `Origin`. **Added:** password hashing,
+sessions/JWT, CSRF, SSRF, security headers, mass assignment, command injection, NoSQL injection,
+open redirect, deserialization, multi-tenancy, debug-mode/exposed surfaces, client-trusted business
+logic, backups. The header now says plainly that a full scorecard is not an audit.
+
+## 0.8.0 — stop doing harm
+Three places where kickoff was actively harmful rather than merely incomplete. It wrote permission
+grants to `.claude/settings.json`, which is **committed** — a machine-local decision published to
+everyone who clones; now `settings.local.json`, gitignored. Allow entries are presented by
+consequence: `Bash(pytest:*)` runs the repo's `conftest.py` — arbitrary code execution wearing a
+narrow-looking name. The sibling roll-up is now consent-gated, quarantined behind a read-only
+subagent, and labels neighbouring ledgers **untrusted** — a cloned repo's ledger claiming a
+"vetted" tool was a working path to installing an attacker's MCP server. Also: `.kickoff/` is
+gitignored (the security scorecard is a map of unfixed holes), and the impossible promise to block
+`--no-verify` is gone.
+
 ## 0.7.1
 - **Verify, don't trust.** The ledger records what was *decided*, not what is *still true*.
   Entries claiming a concrete artifact (file, config, hook, backup, enabled setting) are now
