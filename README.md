@@ -26,7 +26,7 @@ Restart Claude Code so both load.
 
 - **On its own** — a SessionStart primer makes Claude proactively offer the flow when
   you're starting or strengthening a project (and stays quiet on unrelated work).
-- **Or explicitly** — `/kickoff:start` (set up) and `/kickoff:checkup` (strengthen).
+- **Or explicitly** — `/kickoff:start` (set up), `/kickoff:checkup` (strengthen), `/kickoff:security` (deep security pass).
 - **Mute the primer** — set `KICKOFF_QUIET=1` (global) or drop a `.kickoff/quiet` file in a
   project to silence the proactive nudge; the `/kickoff:*` commands keep working.
 
@@ -44,6 +44,14 @@ Restart Claude Code so both load.
   every dimension, and reports what to strengthen. Honors past decisions (won't re-suggest
   what you installed or declined; re-surfaces an item whose decline reason has changed).
 
+**`/kickoff:security` — deep security pass (web projects)**
+- Walks the 15-item web-app security baseline **one item at a time** — brute-force, IDOR,
+  server-side authz, datastore RLS, injection, uploads, secrets, webhook forgery, race
+  conditions, paid-API cost, CORS — and reports a scorecard with `file:line` evidence per item.
+- Focused by design: `checkup` sweeps every dimension broadly, this one goes deep on security.
+  Best run in a **fresh session** — whoever wrote the code will defend it. Composes with the
+  built-in `/security-review` and dependency/secret scanners rather than replacing them.
+
 **How it recommends**
 - **Analyzes real needs**, not just your stack — the built-in baseline is a fast prior,
   not a ceiling; for anything beyond it, it actively discovers (skills.sh, marketplaces,
@@ -57,8 +65,8 @@ Restart Claude Code so both load.
 - `spec-first` skill — methodology overlay (track selector, 6-block spec, reverse-spec for
   legacy code, living-spec / drift control).
 - `project-setup` skill — analysis-first tooling recommendation by project dimension +
-  vetting + the ledger.
-- `/kickoff:start`, `/kickoff:checkup` — commands.
+  vetting + the ledger; includes a 15-item web-app **security baseline**.
+- `/kickoff:start`, `/kickoff:checkup`, `/kickoff:security` — commands.
 - A SessionStart primer for proactive, non-naggy activation.
 
 ## Examples

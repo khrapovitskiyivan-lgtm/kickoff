@@ -10,4 +10,6 @@ Run a strengthening **checkup** on the current project. Do NOT install anything 
 4. Report a concise, prioritized "what to strengthen" — each item tagged (baseline vs discovered) and vetted (skills are lower-risk than plugins/MCP; flag anything account-backed). Render it as a per-dimension **coverage scorecard** (`dimension | status (covered/gap/n-a) | tool | priority`) and persist it in the ledger so the next checkup **diffs against the last** and shows movement. Present this **full plan for one approval** before writing or installing anything — don't act item-by-item.
 5. Update the ledger: append a dated entry for what was recommended, installed (on confirmation), or declined. Create `.kickoff/notes.md` if it's absent.
 
+**Security stays one line here.** Report its status like any other dimension — don't expand it into a 15-item audit mid-sweep, which unbalances the report. If the project is web-facing, flag that it needs a deep pass and point at **`/kickoff:security`** (a focused, fresh-session walk of the security baseline with `file:line` evidence).
+
 Keep it lightweight; skip the ceremony for one-off / throwaway projects.
