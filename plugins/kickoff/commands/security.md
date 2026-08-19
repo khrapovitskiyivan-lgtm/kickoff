@@ -44,7 +44,10 @@ that closes it, at the right layer (server-side, not UI). Present the full list 
 approval** before changing any code.
 
 Persist the scorecard in the ledger `.kickoff/notes.md` so the next pass **diffs against it**
-and shows movement. Never write secrets or exploit payloads into the ledger.
+and shows movement — but **confirm `.kickoff/` is in `.gitignore` first, and add it if not**. This
+scorecard is a prioritized, `file:line`-precise list of the project's *unfixed* holes: committed and
+pushed, it is a map for whoever finds the repo. If the user wants it version-controlled anyway, say
+plainly what that publishes. Never write secrets or exploit payloads into it either.
 
 **Leaked secrets are rotated, not just hidden** — if a key ever reached the client bundle, git
 history, or a public repo, say so plainly: hiding it leaves the old one valid.
