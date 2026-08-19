@@ -61,9 +61,13 @@ below** brainstorming's project decomposition — don't conflate them.
 
 ## 2. Stack-agnostic 6-block spec + adapter
 
-Every module spec has six stack-independent blocks — plus an acceptance block:
-User Stories · Data Model · Interface Contract · Screens / entry points ·
-Business Logic · Edge Cases · **Acceptance / observable-done**.
+Every module spec has six stack-independent blocks — plus a security and an acceptance
+block: User Stories · Data Model · Interface Contract · Screens / entry points ·
+Business Logic · Edge Cases · **Security / abuse** · **Acceptance / observable-done**.
+
+**Security is designed in, not bolted on.** Decide at spec time who may read/write each
+object and where that is enforced — retrofitting authorization after the code exists is
+how the classic holes (IDOR, missing server-side authz, unguarded uploads) get shipped.
 
 Translate **Data Model, Security, API, Background, ML-inference** to your stack via
 `reference/stack-adapters.md` — **never default to Supabase**. Fillable skeleton +
@@ -106,7 +110,9 @@ APIs are involved — not for stable stdlib.
 - [ ] Track chosen deliberately (Spec/Spike); uncertainty removed by a spike before the spec
 - [ ] Stack adapter filled (not Supabase-by-default)
 - [ ] Brownfield: reverse-spec of existing + seams marked
-- [ ] 6-block spec includes an Acceptance / observable-done block
+- [ ] 6-block spec includes a Security / abuse block and an Acceptance / observable-done block
+- [ ] Non-obvious architecture / stack choices have their rationale recorded (one line in the
+      ledger or a short `docs/adr/` note) — so the "why" survives the decision
 - [ ] "Works" defined observably in the spec; ML measured on holdout
 - [ ] Spec updated to reality post-build; SPEC_CHANGELOG entry added
 - [ ] Models routed by task class; Context7 only where needed

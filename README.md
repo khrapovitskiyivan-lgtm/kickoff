@@ -37,7 +37,9 @@ Restart Claude Code so both load.
   you choose a stack — *before* any tooling.
 - **New project (stack chosen)?** A spec-first plan (Spec vs Spike, a 6-block spec), then
   the right tooling.
-- **Existing project?** Detects your stack and recommends what's missing.
+- **Existing project?** A full **first-contact pass**: reverse-specs what's there, captures your
+  conventions, analyzes every dimension, creates the ledger with a baseline scorecard, then
+  equips it. Run it once when you adopt kickoff into a project; `checkup` is the repeat visit.
 
 **`/kickoff:checkup` — strengthen (any time)**
 - Reads your `CLAUDE.md` + stack + installed tooling + the ledger, analyzes gaps across
@@ -71,6 +73,21 @@ Restart Claude Code so both load.
   vetting + the ledger; includes a 15-item web-app **security baseline**.
 - `/kickoff:start`, `/kickoff:checkup`, `/kickoff:security` — commands.
 - A SessionStart primer for proactive, non-naggy activation.
+
+## The ledger
+
+kickoff keeps its memory in `.kickoff/notes.md` inside each project — plain markdown you can
+read and edit by hand. A dated entry per pass, plus the latest scorecard:
+
+```markdown
+## 2026-08-13
+- installed: gitleaks (security & privacy)
+- open: github-actions (delivery) — no CI yet
+- declined: sentry (observability) — no DSN yet; revisit at launch
+```
+
+`installed` and `declined` items aren't suggested again (a `declined` one comes back only if
+its reason stops holding), and `open` ones resurface next pass. Never put secrets in it.
 
 ## Examples
 

@@ -39,3 +39,22 @@ Top priorities: **CI**, **secret scanning + PII log-scrub**, then rate limiting.
 
 A later checkup won't re-suggest gitleaks (installed) or sentry (declined, reason unchanged),
 and will re-surface sentry only once a DSN exists.
+
+## Security scorecard — what `/kickoff:security` adds
+
+The checkup above keeps security to **one line**. Because this project is web-facing, it
+delegates the deep pass, which walks the 15-item baseline one item at a time and cites
+`file:line` for every verdict:
+
+### Security scorecard 2026-08-13
+| # | item | status | evidence (file:line) | severity |
+|---|---|---|---|---|
+| 3 | IDOR / object ownership | gap | `api/leads.py:88` — `GET /leads/{id}/matches` loads by id, no owner check | high |
+| 1 | login brute-force | gap | no rate limit on the auth route (`api/auth.py`) | high |
+| 14 | paid-API cost abuse | gap | matcher calls the embedding API per request, no per-user cap | med |
+| 6 | SQL injection | guarded | `db/leads.py:24` — SQLAlchemy bound params throughout | — |
+| 8 | file upload | n-a | project accepts no uploads | — |
+| 15 | CORS | guarded | `main.py:31` — explicit origin list, no wildcard | — |
+
+Each gap is reported with what an attacker does with it and the smallest fix that closes
+it — then the whole list goes up for **one approval** before any code changes.

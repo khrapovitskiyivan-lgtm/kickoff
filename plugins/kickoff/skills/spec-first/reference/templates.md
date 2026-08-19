@@ -16,6 +16,10 @@
 <the rules; deterministic functions where possible>
 ### Edge Cases
 <empty, malformed, concurrent, over-limit, unauthorized, …>
+### Security / abuse
+<per stack — see stack-adapters.md: who may read/write each object and where that is
+ enforced (server-side, not UI); what untrusted input reaches; what it costs an abuser
+ to hammer it. Web-facing → design against project-setup's security-baseline.md.>
 ### Acceptance / observable-done
 <what must be observably true to call this done: concrete scenarios;
  for ML, the metric + threshold on a named holdout>
