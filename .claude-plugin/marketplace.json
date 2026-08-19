@@ -1,14 +1,16 @@
 {
   "name": "kickoff",
-  "owner": { "name": "khrapovitskiyivan-lgtm" },
+  "owner": {
+    "name": "khrapovitskiyivan-lgtm"
+  },
   "metadata": {
-    "description": "A shareable starter kit: spec-first planning + vetted tooling setup for new & existing projects — and, on your OK, it writes a scoped permissions allowlist + quality-gate config."
+    "description": "A shareable starter kit for shipping fast: a 28-item web-app security baseline, a decision ledger that verifies itself, spec-first planning, and vetted tooling setup."
   },
   "plugins": [
     {
       "name": "kickoff",
       "source": "./plugins/kickoff",
-      "description": "Spec-first project kickoff + a needs-analysis that recommends vetted Claude Code tooling (incl. OWASP LLM Top 10), with vet-before-install and, on confirmation, a scoped permissions allowlist + quality-gate config."
+      "description": "Security baseline walk with file:line evidence + a self-verifying decision ledger; spec-first planning and vet-before-install tooling for new & existing projects."
     }
   ]
 }

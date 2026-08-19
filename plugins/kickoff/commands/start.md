@@ -1,10 +1,18 @@
 ---
-description: Kick off — set up a new project (spec-first), or run the full first-contact pass on an existing one.
+description: Kick off — the once-per-project pass, for a project with NO `.kickoff/notes.md` yet: plan a new one spec-first, or run first contact on an existing codebase. If that ledger already exists, use /kickoff:checkup instead.
 ---
 
 **Prerequisite check (new-project path):** the planning flow drives `superpowers:*` skills. If they aren't installed, tell the user to add the Superpowers plugin first — `claude plugin marketplace add obra/superpowers-marketplace` then `claude plugin install superpowers@superpowers-marketplace` — and pause until it's in. The **existing**/equip path below works without it.
 
-Ask the user whether this is a **new** project or an **existing** one, then:
+**Route yourself — don't ask what you can see.** Look first, then take the matching branch:
+
+| What you find | Do this |
+|---|---|
+| `.kickoff/notes.md` exists | kickoff already onboarded here → run **`/kickoff:checkup`** instead (the repeat visit), and say why you switched. |
+| No code, or an empty folder | **New / just an idea** branch below. |
+| Code but no ledger | **Existing (brownfield)** branch below — the first-contact pass. |
+
+State which branch you picked and what told you. Ask only if the signals genuinely conflict.
 
 - **New / empty folder / just an idea** → be proactive: if there is no code and no design yet, first **ASK what they are building** — don't stay silent — then shape it with `superpowers:brainstorming` (problem, users, MVP scope, and the stack choice); THEN `spec-first` (track selector → 6-block spec); THEN `project-setup` (equip the chosen stack). Do NOT recommend stack tooling before a stack exists.
 - **Existing (brownfield)** → this is **first contact** with a codebase kickoff has never seen, so go wider than a routine checkup — there is no ledger to honor and nothing to diff against yet. Do all of it, in order:

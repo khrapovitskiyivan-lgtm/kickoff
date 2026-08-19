@@ -2,6 +2,22 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.11.0 — lead with what's actually differentiated
+A product reviewer put it bluntly: *"I'd send a friend the security baseline and mention the
+plugin."* The dimension sweep — the thing on the front page — is roughly what a good model does
+anyway when asked "what's missing here?", while the baseline and the ledger aren't reproducible
+from its priors. So the framing is inverted: **security and the ledger lead**, the tooling sweep
+supports. Also acted on the same review's cuts:
+- `stack-adapters.md` shrank from a per-stack matrix to the rule it existed to enforce (which
+  blocks need translating, and never default to the stack you saw last). The matrix was commodity
+  knowledge with a shelf life — and its first column was Supabase, causing the bias it warned about.
+- `statusline.sh` left the plugin. Tuning your Claude Code setup is a different object from
+  equipping a project; only the handoff-note practice stayed.
+- `/kickoff:start` routes itself instead of asking "new or existing?" — the answer is observable
+  (empty folder / code / an existing ledger), and an existing ledger now sends you to `checkup`.
+  Both command descriptions state that rule, and the SessionStart primer — which only ever knew
+  about `start` — now routes across all three.
+
 ## 0.10.0 — executability
 Rules a model reliably skips are worth nothing. **Verify now precedes skip** in the ledger pass
 (0.7.1's headline rule was dead: "skip anything installed" came first). The SessionStart hook got

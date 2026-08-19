@@ -34,8 +34,10 @@ need or gap — even if the answer is "already covered" or "n/a". Cover at least
   handles prompts** → OWASP **LLM Top 10**: prompt injection, secret/PII leakage into prompts,
   unsafe LLM-output handling) · **delivery** (CI, deploy, containers) · **observability** (errors, logs,
   metrics) · **performance** (caching, rate limiting) · **background work** (jobs, queues, cron)
-  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **token / cost efficiency**
-  (auto-compact, model routing by task class, subagents for heavy reads) · **+ anything the project implies**.
+  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **+ anything the project implies**.
+
+Stay on the project. Tuning the user's own Claude Code setup (status lines, compaction settings)
+is a different object — mention a **handoff note** if a session is long, and leave it there.
 
 Name **real gaps beyond the obvious stack tools** (rate limiting? i18n? CI? queues? caching?
 secret scanning?). For a deep, per-category analysis, **run the official `claude-code-setup`**

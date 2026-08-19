@@ -1,17 +1,21 @@
-# Stack adapters — 6-block core → concrete per stack
+# Stack adapters — translating the spec into your stack
 
-The six spec blocks are stack-independent. These blocks need translation to your
-stack: **Data Model, API, Background, ML-inference, Security**. Add a row per new
-stack — never assume Supabase.
+Six of the spec blocks are stack-independent. **Five need translation before the spec is
+buildable:** Data Model · API · Background / cron · ML-inference · Security.
 
-| Block | Supabase / Next | Python / FastAPI | Node / Express (or Hono) | Go (Gin / net/http) | Rust (Axum / Actix) |
-|---|---|---|---|---|---|
-| Data Model | tables + RLS | SQLAlchemy + Pydantic models; permissions at the service layer | Prisma / Drizzle models; Zod validation; authz in service layer | sqlc / GORM structs; validation at handler; authz in service layer | SQLx / Diesel structs; `validator`; authz in service layer |
-| API | Server Actions / Edge | FastAPI routes: method, path, Pydantic in/out schemas, status codes | routes: method, path, Zod in/out schemas, status codes | handlers: method, path, request/response structs, status codes | handlers: method, path, serde in/out types, status codes |
-| Background / cron | Edge Functions cron | Celery / APScheduler tasks | BullMQ / node-cron workers | goroutine workers / robfig/cron | tokio tasks / tokio-cron-scheduler |
-| ML-inference | — | model service wrapper (ONNX / FAISS), in/out contract, latency budget | onnxruntime-node wrapper, in/out contract, latency budget | onnxruntime-go / gRPC to model service, in/out contract, latency budget | `ort` (ONNX Runtime) / tract, in/out contract, latency budget |
-| Security | RLS policies | on-premise perimeter, de-identification, auth middleware | helmet + auth middleware, input validation, env secrets | middleware auth, context timeouts, env / vault secrets | tower middleware auth, input validation, env secrets |
+**The rule: name the concrete mechanism your stack actually uses — and never default to the
+stack you saw last.** "Store the leads" is not a Data Model; `SQLAlchemy model + Pydantic schema,
+authorization in the service layer` is. Supabase/RLS is one answer among many, not the answer.
 
-**Adding a stack:** copy the block column, fill each row with that stack's concrete
-mechanism. Keep volatile specifics here (one-line edits) rather than woven through
-prose elsewhere.
+For each of the five, write what that stack really provides:
+
+| Block | The question it must answer |
+|---|---|
+| Data Model | Where do rows live, how are they typed and validated, and **where is access enforced** — the DB (RLS/policies) or a service layer? |
+| API | The concrete route/handler shape: method, path, request and response schemas, status codes. |
+| Background / cron | What runs work off the request path — a queue, a scheduler, a serverless cron? |
+| ML-inference | How the model is served, its in/out contract, and its latency budget. |
+| Security | Which of the guards in `project-setup`'s `security-baseline.md` this stack expects you to build, and where each one lives. |
+
+A worked translation for Python/FastAPI is in `example-spec.md`. Match its specificity, not its
+stack — deriving the mechanisms for your own stack is the point of this step.

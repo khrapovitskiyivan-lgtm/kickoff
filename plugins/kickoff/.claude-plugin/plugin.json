@@ -1,7 +1,7 @@
 {
   "name": "kickoff",
-  "description": "Kick off new projects spec-first and equip new or existing ones with the right, vetted Claude Code tooling (needs analysis across every dimension, incl. OWASP LLM Top 10) — then, on confirmation, write a scoped permissions allowlist + quality-gate config.",
-  "version": "0.10.0",
+  "description": "Walk your project against a 28-item web-app security baseline with file:line evidence, and keep a ledger of what you installed, declined and why — verified each pass, so nothing is re-litigated and nothing silently rots. Plus spec-first planning and a vetted tooling pass.",
+  "version": "0.11.0",
   "author": {
     "name": "khrapovitskiyivan-lgtm"
   },

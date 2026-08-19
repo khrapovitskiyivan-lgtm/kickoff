@@ -1,6 +1,10 @@
 # kickoff
 
-A shareable Claude Code starter kit. Run /kickoff:start to plan a project spec-first, or audit an existing one and equip it with vetted tooling matched to your stack — across every dimension (testing, security incl. LLM risks, delivery…). On your OK it writes a scoped permissions allowlist + quality-gate config. A calmer alternative to "install this, install that" tutorials.
+A shareable Claude Code starter kit for people shipping fast. It walks your project against a
+**28-item web-app security baseline** — the holes quickly-built apps actually have — and keeps a
+**ledger** of what you installed, declined, and why, so nothing gets re-litigated and nothing
+silently rots. Around that: spec-first planning for new work, and a vetted tooling pass for the
+rest. A calmer alternative to "install this, install that" tutorials.
 
 ## Install (one time)
 
@@ -26,33 +30,32 @@ Restart Claude Code so both load.
 
 - **On its own** — a SessionStart primer makes Claude proactively offer the flow when
   you're starting or strengthening a project (and stays quiet on unrelated work).
-- **Or explicitly** — `/kickoff:start` (set up), `/kickoff:checkup` (strengthen), `/kickoff:security` (deep security pass).
+- **Or explicitly** — `/kickoff:security` (deep security pass), `/kickoff:start` (once per project), `/kickoff:checkup` (repeat visit).
 - **Mute the primer** — set `KICKOFF_QUIET=1` (global) or drop a `.kickoff/quiet` file in a
   project to silence the proactive nudge; the `/kickoff:*` commands keep working.
 
 ## What it does
 
-**`/kickoff:start` — set up**
-- **Just an idea (no stack yet)?** It shapes the idea first (via brainstorming) and helps
-  you choose a stack — *before* any tooling.
-- **New project (stack chosen)?** A spec-first plan (Spec vs Spike, a 6-block spec), then
-  the right tooling.
-- **Existing project?** A full **first-contact pass**: reverse-specs what's there, captures your
-  conventions, analyzes every dimension, creates the ledger with a baseline scorecard, then
-  equips it. Run it once when you adopt kickoff into a project; `checkup` is the repeat visit.
-
-**`/kickoff:checkup` — strengthen (any time)**
-- Reads your `CLAUDE.md` + stack + installed tooling + the ledger, analyzes gaps across
-  every dimension, and reports what to strengthen. Honors past decisions (won't re-suggest
-  what you installed or declined; re-surfaces an item whose decline reason has changed).
-
-**`/kickoff:security` — deep security pass (web projects)**
-- Walks the 28-item web-app security baseline **one item at a time** — brute-force, IDOR,
-  server-side authz, datastore RLS, injection, uploads, secrets, webhook forgery, race
-  conditions, paid-API cost, CORS — and reports a scorecard with `file:line` evidence per item.
-- Focused by design: `checkup` sweeps every dimension broadly, this one goes deep on security.
-  Best run in a **fresh session** — whoever wrote the code will defend it. Composes with the
+**`/kickoff:security` — the deep security pass (start here for a live web app)**
+- Walks the **28-item web-app security baseline** one item at a time: password storage, sessions
+  and JWTs, IDOR, server-side authz, datastore RLS, CSRF, SSRF, injection, uploads, secret
+  exposure, webhook forgery, race conditions, paid-API cost abuse, CORS, and more.
+- Every verdict carries evidence: a **quoted line** for a guard that exists, or the **search that
+  came back empty** for one that doesn't — so a scorecard can't be padded with plausible-looking
+  citations. Nothing gets changed without your approval.
+- Best run in a **fresh session** — whoever wrote the code will defend it. Composes with the
   built-in `/security-review` and dependency/secret scanners rather than replacing them.
+
+**`/kickoff:start` — the once-per-project pass**
+- It routes itself from what it sees, rather than asking: no code yet → shapes the idea and the
+  stack choice first (via brainstorming), then a spec-first plan; existing codebase → a
+  **first-contact pass** that reverse-specs what's there, captures your conventions, analyzes
+  every dimension and creates the ledger.
+
+**`/kickoff:checkup` — the repeat visit**
+- Reads the ledger and **verifies it**: anything recorded as done that names a file, config or
+  backup gets checked for still being there — a guard that rotted outranks any new suggestion.
+  Then reports what to strengthen, honoring what you already installed or declined.
 
 **How it recommends**
 - **Analyzes real needs**, not just your stack — the built-in baseline is a fast prior,

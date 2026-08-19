@@ -1,5 +1,5 @@
 ---
-description: On-demand health pass on the current project — what to strengthen, honoring past decisions.
+description: The repeat visit — a health pass on a project kickoff already onboarded (`.kickoff/notes.md` exists): what to strengthen, honoring past decisions and diffing against the last scorecard. For a project with no ledger yet, use /kickoff:start.
 ---
 
 Run a strengthening **checkup** on the current project. Do NOT install anything without the user's confirmation.
