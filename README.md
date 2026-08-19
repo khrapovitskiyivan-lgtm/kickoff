@@ -59,6 +59,9 @@ Restart Claude Code so both load.
 - **Vets before install** — flags what executes code (hooks / MCP servers) vs plain
   instructions (skills), and never installs without your confirmation.
 - **Tracks progress** via a per-project ledger (`.kickoff/notes.md`).
+- **Reuses what you decided next door** — optionally skims sibling projects' ledgers so a tool
+  you already vetted (or declined) isn't re-litigated from scratch. Tooling verdicts only:
+  no project content, business detail, or secrets ever cross between projects.
 
 ## What's inside
 

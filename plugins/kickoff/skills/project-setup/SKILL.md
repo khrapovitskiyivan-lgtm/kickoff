@@ -105,6 +105,27 @@ Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat
   ```
 Never write secrets into it.
 
+### Sibling roll-up — reuse what you already decided next door (optional)
+
+Decisions made in one project should not be re-litigated from scratch in the next. **Before**
+recommending, optionally skim the ledgers of sibling projects to prime this pass:
+
+- **Scope.** Sibling directories of the current project root (same parent folder) that contain
+  a `.kickoff/notes.md`. Read **only that file**, read-only — never other project files, never
+  outside the parent folder. Skip silently if there are none.
+- **Extract decisions ONLY.** Take the *tooling verdicts*: tool name · dimension ·
+  installed / declined / open · the one-line reason. Ledgers are free-form prose and often
+  hold project content — business, legal, personal, or client detail. **None of that crosses
+  over.** Never copy prose, findings, or context from another project into this session; if a
+  reason can't be stated in one neutral clause about the tool, drop it.
+- **Use it as a prior, not a verdict.** Surface it as a lead: *"in sibling X you vetted and
+  chose Y for this need — reuse it here?"* or *"you declined Z twice for <tool reason>; still
+  wanted?"* A different project may legitimately need a different answer.
+- **This project's own ledger always wins.** A local `installed`/`declined` entry is never
+  overridden by a sibling's.
+
+Skip the roll-up when it would be noise (a one-off script, or an unrelated project type).
+
 ## Examples — orientation only, NOT the menu
 
 A few common defaults per dimension. **Not exhaustive; most recommendations should come from
