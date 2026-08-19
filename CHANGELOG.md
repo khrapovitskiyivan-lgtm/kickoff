@@ -2,6 +2,13 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.11.1
+- `scripts/check.sh` now compares the installed plugin's version against this repo's. The two are
+  independent — installing copies the files into a versioned cache — so editing here changes
+  nothing in any session until `claude plugin update` runs. That gap went unnoticed for five
+  releases: every session kept running the 0.3.5 build while the fixes sat in git. Verify, don't
+  trust, pointed at ourselves.
+
 ## 0.11.0 — lead with what's actually differentiated
 A product reviewer put it bluntly: *"I'd send a friend the security baseline and mention the
 plugin."* The dimension sweep — the thing on the front page — is roughly what a good model does

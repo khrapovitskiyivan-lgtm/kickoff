@@ -77,6 +77,25 @@ done < <(
     sed 's/:[0-9]*:/:/' | tr -d '`' | sort -u
 )
 
+echo "== installed copy matches this repo =="
+# The repo and the installed plugin are independent: `claude plugin install` copies the
+# files into a versioned cache dir. Editing here changes nothing in any session until the
+# plugin is updated — which is how five releases of fixes sat unused while every session
+# ran the old build. Verify, don't trust, applied to ourselves.
+_repo_ver=$(python -c "import json;print(json.load(open('plugins/kickoff/.claude-plugin/plugin.json',encoding='utf-8'))['version'])" 2>/dev/null)
+if ! command -v claude >/dev/null 2>&1; then
+  note "skip claude CLI not on PATH — cannot compare (repo is $_repo_ver)"
+else
+  _inst_ver=$(claude plugin list 2>/dev/null | grep -A2 'kickoff@kickoff' | sed -n 's/.*Version: *//p' | head -1)
+  if [ -z "$_inst_ver" ]; then
+    note "skip kickoff is not installed here (repo is $_repo_ver)"
+  elif [ "$_inst_ver" = "$_repo_ver" ]; then
+    note "ok   installed $_inst_ver == repo $_repo_ver"
+  else
+    bad "installed kickoff is $_inst_ver but this repo is $_repo_ver — your edits are NOT live. Run: claude plugin update kickoff@kickoff (then restart Claude Code)"
+  fi
+fi
+
 echo
 if [ "$fail" -eq 0 ]; then echo "ALL CHECKS PASSED"; else echo "SOME CHECKS FAILED"; fi
 exit "$fail"
