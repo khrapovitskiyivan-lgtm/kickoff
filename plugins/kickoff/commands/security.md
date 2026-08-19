@@ -2,7 +2,8 @@
 description: Focused security pass over the web-app baseline — one item at a time, with file:line evidence.
 ---
 
-Walk the project against `project-setup`'s `reference/security-baseline.md` — the 15 holes
+Walk the project against the `project-setup` skill's security baseline
+(`skills/project-setup/reference/security-baseline.md` in this plugin) — the 15 holes
 fast-built web projects have most often. Report findings; **fix nothing without confirmation**.
 
 > **Run this in a fresh session.** Whoever wrote the code will defend it — a clean context
