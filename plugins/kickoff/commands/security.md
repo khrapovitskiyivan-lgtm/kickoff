@@ -25,6 +25,13 @@ fast-built web projects have most often. Report findings; **fix nothing without 
    reconstruct line numbers from memory. A **gap** has no line, so it takes the other form: the
    search you ran and its empty result — `grepped "rate|limit|throttle" across api/, 0 matches`.
    A verdict with neither a quoted line nor a named empty search is not a finding; drop it.
+   **A gap needs more than one empty grep.** A named search that came back empty proves you looked,
+   not that the guard is absent — the guard may simply be spelled differently (a hand-rolled counter
+   is not called "throttle"). Before calling anything a gap: search **at least two independent
+   wordings**, including the domain word rather than the security term (`recent`, `count`, `since`,
+   `attempts`), *and* read the handler the guard would live in. If you have not opened that code
+   path, the status is `unverified`, not `gap`. A false gap that carries a citation is worse than a
+   bare guess: it reads as audited.
 4. **Per module, not per repo.** On a large codebase, walk module by module; the more code
    judged at once, the more gets missed.
 5. **Compose, don't reinvent.** Use what already exists rather than hand-rolling a scanner:

@@ -52,4 +52,7 @@ shape implies is still your job to raise.
 - **Don't ask "check the project for vulnerabilities"** — the agent answers "looks fine" and is technically right. Go **one item at a time**.
 - **Check each module as it's written** — the more code at once, the easier to miss something.
 - **Demand the file and line** where the guard lives, or where it's missing.
+- **Absence is harder to prove than presence.** One empty grep shows you looked, not that the
+  guard is missing — it may be spelled in the project's own words. Search several wordings and
+  open the code path before declaring a gap.
 - **Use a fresh session** — whoever wrote the code will defend it.

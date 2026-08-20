@@ -2,6 +2,14 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.11.2
+- **Absence needs more proof than presence.** A gap could be declared on one empty grep, which
+  proves you looked — not that the guard is missing. Found by dogfooding: a rate limiter was
+  reported as a gap because it was spelled in the project's own words and the search used the
+  security term. Now a gap requires at least two independent wordings *and* reading the code path
+  it would live in; otherwise the status is `unverified`. A false gap carrying a citation is worse
+  than a guess — it reads as audited.
+
 ## 0.11.1
 - `scripts/check.sh` now compares the installed plugin's version against this repo's. The two are
   independent — installing copies the files into a versioned cache — so editing here changes
