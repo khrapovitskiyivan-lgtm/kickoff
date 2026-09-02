@@ -2,6 +2,16 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.13.1
+- Subagent definitions were a blind spot: kickoff *used* read-only subagents in two places but never
+  said how to define one, and the `.claude/` audit added in 0.12.0 checked settings and CLAUDE.md
+  while ignoring `agents/`. Step 4 now offers an agent definition where a role genuinely repeats,
+  and treats `tools:` as what it is — a boundary, the same enforcement layer as the deny list,
+  scoped to a helper. Equal weight goes to when *not* to define one: a two-minute task costs more to
+  hand over than to do, a helper cannot see the conversation so far, and the built-in `Explore` and
+  `Plan` already cover most "I need a reader" cases. The audit now flags definitions that duplicate
+  each other or the built-ins, and any whose tool list is wider than its job.
+
 ## 0.13.0 — auditing generated design
 A page can pass performance, accessibility and SEO and still read as machine-made. New
 `reference/ai-design-tells.md`, wired into the frontend-quality dimension for marketing surfaces

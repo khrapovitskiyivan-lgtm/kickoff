@@ -54,6 +54,10 @@ a broken config just stops applying, and nobody is told. Check:
   picks one, and not reliably the one you meant. Read the set as a whole, not file by file.
 - **Stale config.** Settings are read at session start; an edit mid-session does nothing until a
   restart. Same for a plugin whose installed copy lags its source.
+- **`agents/` earning their keep.** Every subagent definition's description sits in context
+  permanently, so a drawer full of them degrades the choice of which to call. Flag any that
+  duplicate each other or the built-ins (`Explore` searches and cannot write; `Plan` gathers for a
+  plan), and any whose `tools:` is wider than its job.
 
 Stay on the project. Tuning the user's own Claude Code setup (status lines, compaction settings)
 is a different object — mention a **handoff note** if a session is long, and leave it there.
@@ -131,6 +135,22 @@ crystallize the vet — never write silently, never overwrite:
   `CLAUDE.md` if it were always resident. Offer one when a convention is real but local (a content
   directory's tone, a migrations folder's rules, a generated-code area that must not be hand-edited).
   Without `paths:` the file loads every session like `CLAUDE.md` — only worth it as organisation.
+- **A subagent definition (`.claude/agents/<name>.md`), when a role actually repeats.** Its
+  frontmatter is the whole design: `name`, a `description` that says **when to call it** (the model
+  routes on this line, so write it as a trigger, not a title), and `tools:` listing what it may use.
+  - **`tools` is a boundary, not a convenience.** A reader given `tools: Read, Grep, Glob` *cannot*
+    write, whatever it decides. Same enforcement layer as the deny list above, scoped to a helper:
+    give the narrowest set the job needs.
+  - **Worth defining when** the work is bulky and one-shot (read two hundred files, return one
+    answer), when the helper must be denied tools the main session has, or when the same role
+    recurs across projects. The point is that the heavy reading happens in *its* context and only
+    the conclusion comes back.
+  - **Not worth it when** the task takes two minutes (handing it over costs more than doing it), or
+    when the helper would need the conversation so far — it cannot see it, and re-explaining is the
+    expensive part. **Check the built-ins first**: `Explore` searches and cannot write, `Plan`
+    gathers material for a plan. Most "I need a reader" cases are already covered.
+  - **Keep the drawer small.** Descriptions are resident context; a dozen near-identical helpers
+    make the choice worse, not better. Prefer one good definition over three overlapping ones.
 - **CLAUDE.md stub (light, only if wanted).** Only when the project lacks one and the user asks:
   a short stub (stack + key conventions). Keep it minimal — `/init` owns full project docs; do
   **not** overwrite an existing `CLAUDE.md`.
