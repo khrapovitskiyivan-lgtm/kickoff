@@ -2,6 +2,21 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.14.0 — the other half of the enforcement layer
+0.12.0 took permissions and called the enforcement layer done. It wasn't: **hooks** are the other
+half, and kickoff ships a SessionStart hook of its own while never telling a project how to write
+one. Step 4 now offers them, with the moments that matter (`PreToolUse` can block an action) and
+the two failures that look like a broken hook: no explicit `timeout` stalls the agent, and a bare
+relative script path is not found because a hook does not necessarily run from the project root.
+Also: a `SessionStart` hook without a `matcher` re-fires on resume and on every compaction, which
+is a lesson from our own 0.10.0.
+
+- **`.mcp.json`**: recommending an MCP server never said where it lands. The project-root file is
+  the committed, shared one; anything else is personal. No tokens in it, ever.
+- **Precedence**: "my rule isn't applying" is usually a shadowed rule, not a broken one. The audit
+  now names the order, including the fact that a personal `settings.local.json` quietly overrides
+  the committed team file, and that the nearest `CLAUDE.md` wins.
+
 ## 0.13.1
 - Subagent definitions were a blind spot: kickoff *used* read-only subagents in two places but never
   said how to define one, and the `.claude/` audit added in 0.12.0 checked settings and CLAUDE.md

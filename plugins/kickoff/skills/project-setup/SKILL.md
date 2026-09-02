@@ -54,6 +54,14 @@ a broken config just stops applying, and nobody is told. Check:
   picks one, and not reliably the one you meant. Read the set as a whole, not file by file.
 - **Stale config.** Settings are read at session start; an edit mid-session does nothing until a
   restart. Same for a plugin whose installed copy lags its source.
+- **Which file actually won.** "My rule isn't applying" is usually not a broken rule but a
+  shadowed one: the same setting exists in two places and the stronger one is in force. Strongest
+  first: centrally-managed policy, then flags passed at launch, then `.claude/settings.local.json`
+  (personal, this project), then `.claude/settings.json` (the team's), then `~/.claude/settings.json`
+  (your habits everywhere). So a personal file quietly overrides the committed team one, which is
+  usually what you want and occasionally the whole mystery. Read the layers before editing any of
+  them, and note the same shape for instructions: the `CLAUDE.md` nearest the file being worked on
+  wins, with `CLAUDE.local.md` as the personal, uncommitted variant.
 - **`agents/` earning their keep.** Every subagent definition's description sits in context
   permanently, so a drawer full of them degrades the choice of which to call. Flag any that
   duplicate each other or the built-ins (`Explore` searches and cannot write; `Plan` gathers for a
@@ -151,6 +159,24 @@ crystallize the vet — never write silently, never overwrite:
     gathers material for a plan. Most "I need a reader" cases are already covered.
   - **Keep the drawer small.** Descriptions are resident context; a dozen near-identical helpers
     make the choice worse, not better. Prefer one good definition over three overlapping ones.
+- **A Claude Code hook, when a rule must hold rather than be remembered.** Permissions say what
+  *may* run; hooks say what *happens* at a moment, and both are executed by the program rather than
+  interpreted by the model. Configured in the same settings file. The moments worth knowing:
+  `SessionStart` (prime or check the environment), `UserPromptSubmit` (inject something into every
+  request), `PreToolUse` (**can block an action** - the place for a dangerous-command guard),
+  `PostToolUse` (tidy or verify after a change), `Notification` (the agent is waiting on a human),
+  `Stop` / `SubagentStop` (work finished). Use a `matcher` so a hook fires on the events it means:
+  a `SessionStart` hook with none also re-fires on resume and on every compaction.
+  - **Two failures that look like a broken hook.** A slow check with no explicit `timeout` stalls
+    the agent. And a script referenced by a bare relative path is not found, because a hook does not
+    necessarily run from the project root - anchor it: `"$CLAUDE_PROJECT_DIR"/.claude/hooks/name.sh`.
+  - A hook runs code on the user's machine at moments they did not trigger. Show what it will run,
+    and prefer the smallest one that does the job over a clever one.
+- **MCP servers land in a file, and which one decides who gets them.** A server added for yourself
+  is personal; **`.mcp.json` at the project root is the shared one** - committed, so everyone who
+  clones the repo is offered the same connections. Put a server there only when the whole team
+  genuinely needs it, and never put a token in it: that file reaches everyone and stays in history.
+  Credentials belong in the environment, referenced by name.
 - **CLAUDE.md stub (light, only if wanted).** Only when the project lacks one and the user asks:
   a short stub (stack + key conventions). Keep it minimal — `/init` owns full project docs; do
   **not** overwrite an existing `CLAUDE.md`.
