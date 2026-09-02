@@ -2,6 +2,16 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.14.1
+- Step 4's artifact catalogue moved to `reference/equip-artifacts-guide.md`, leaving one line per
+  artifact in the skill. `project-setup/SKILL.md` had grown from 153 lines to 262 as each artifact
+  arrived, and a prompt-engineering review had already named density (not length) as its real
+  problem: the most important instruction in the file, the dimension sweep, was competing with
+  everything added after it. Now 190 lines, with the failure modes that matter - which settings file
+  is committed, which allow entries are arbitrary execution in disguise, why a hook needs an explicit
+  timeout - a read away rather than always resident. Same treatment already applied to the examples
+  table and the design tells.
+
 ## 0.14.0 — the other half of the enforcement layer
 0.12.0 took permissions and called the enforcement layer done. It wasn't: **hooks** are the other
 half, and kickoff ships a SessionStart hook of its own while never telling a project how to write
