@@ -2,6 +2,27 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.14.2 — remove advice that was wrong
+An adversarial review checked the deny baseline against the host's own documentation. Three things
+had to go, because wrong security advice is worse than none: a user who accepts a guard believes
+they are covered.
+
+- **The debugging write-freeze is deleted.** It was inert twice over: permission patterns have no
+  negation, and a path rule written for `Write` is accepted and then never consulted (the matching
+  name is `Edit`). It was offered at the exact moment someone is debugging and relying on it. The
+  hedge it shipped with, "per the host's pattern syntax", was an admission it had not been verified.
+- **`Bash(curl * | bash)` is deleted.** A command is split on `|` before matching, so the pipe in
+  the pattern is a literal and the rule can never match anything.
+- **"Explore searches and cannot write" is deleted.** A tool set that still contains `Bash` can write
+  through a shell redirect. Verify a built-in's actual tool list rather than assuming.
+
+In their place the guide now states what this layer really reaches: path denies are solid, **Bash
+rules that constrain arguments are fragile** (the host documents the bypasses), denies do not reach
+an arbitrary subprocess or an MCP file server, and `/permissions` should be checked afterwards
+because a rule that is accepted but never consulted looks exactly like one that works. The old
+closing line, "anything expensive to lose belongs here, not in prose", was the false-confidence
+generator and is gone.
+
 ## 0.14.1
 - Step 4's artifact catalogue moved to `reference/equip-artifacts-guide.md`, leaving one line per
   artifact in the skill. `project-setup/SKILL.md` had grown from 153 lines to 262 as each artifact

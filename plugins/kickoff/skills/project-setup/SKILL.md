@@ -64,8 +64,8 @@ a broken config just stops applying, and nobody is told. Check:
   wins, with `CLAUDE.local.md` as the personal, uncommitted variant.
 - **`agents/` earning their keep.** Every subagent definition's description sits in context
   permanently, so a drawer full of them degrades the choice of which to call. Flag any that
-  duplicate each other or the built-ins (`Explore` searches and cannot write; `Plan` gathers for a
-  plan), and any whose `tools:` is wider than its job.
+  duplicate each other or the built-ins (`Explore` for searching, `Plan` for gathering), and any
+  whose `tools:` is wider than its job - **or absent**, which is wider than any of them.
 
 Stay on the project. Tuning the user's own Claude Code setup (status lines, compaction settings)
 is a different object — mention a **handoff note** if a session is long, and leave it there.

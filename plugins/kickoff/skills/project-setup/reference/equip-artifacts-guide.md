@@ -31,18 +31,21 @@ personal one.
   - **Secrets**: `Read(.env)`, `Read(**/*credential*)`, `Read(**/*.pem)` — keep them out of context
     in the first place, rather than trusting nothing leaks them later.
   - **Irreversible git**: `Bash(git push --force*)`, `Bash(git reset --hard*)`.
-  - **Destructive shell**: `Bash(rm -rf *)`, and `Bash(curl * | bash)` (fetch-and-execute).
+  - **Destructive shell**: `Bash(rm -rf *)` catches that exact spelling. It does not catch `rm -fr`,
+    `rm -r -f`, `git clean -fdx`, or a script that deletes. Do not present it as covering deletion.
   - **The project's own precious data** — whatever a lost file would cost most here (raw datasets,
     migrations, generated reports). Ask what that is; it differs per project and is the one entry
     a generic list can't supply.
-  - **A temporary freeze, when the task is debugging.** While chasing one bug, denying writes outside
-    the directory in question (`Write(!src/billing/**)`-shaped, per the host's pattern syntax) stops
-    the classic "fixed it, and quietly changed six other files" outcome. Offer it as a *session*
-    measure and say plainly it should be lifted afterwards — a freeze left behind is a puzzle for
-    whoever hits it next week.
-  This is the layer that does not depend on the model reading carefully: a text rule in `CLAUDE.md`
-  is a request the model can lose track of, a `deny` entry is enforced before it acts. **Anything
-  expensive to lose belongs here, not in prose.**
+  **Know what this layer does and does not reach.** A `deny` on a path is solid: `Read`/`Edit` rules
+  are enforced before the model acts and also cover the file-reading shell commands the host
+  recognises. **Bash rules that constrain arguments are fragile** - the host's own documentation warns
+  they are bypassed by reordered options, extra spaces, a different spelling, redirects or variable
+  substitution, and a command is split on `&&`, `||`, `;` and `|` before matching, so a pattern
+  containing a pipe never matches anything. When something genuinely must not happen, deny the tool
+  outright or use a `PreToolUse` hook; a clever argument pattern is a comfort, not a control. Denies
+  also do not reach an arbitrary subprocess (`python -c "open('.env').read()"`) or an MCP file server,
+  which needs its own rules. **After writing them, check `/permissions` to see what is actually in
+  effect** - a rule the host accepts but never consults looks identical to one that works.
 - **Scoped rules (`.claude/rules/*.md`, when a convention only applies to part of the tree).**
   A rule file with `paths:` frontmatter loads **only when the agent opens a matching file**, so it
   costs nothing the rest of the time — the right home for "how we write X" that would bloat
@@ -61,8 +64,9 @@ personal one.
     the conclusion comes back.
   - **Not worth it when** the task takes two minutes (handing it over costs more than doing it), or
     when the helper would need the conversation so far — it cannot see it, and re-explaining is the
-    expensive part. **Check the built-ins first**: `Explore` searches and cannot write, `Plan`
-    gathers material for a plan. Most "I need a reader" cases are already covered.
+    expensive part. **Check the built-ins first**: `Explore` is meant for searching and `Plan` for gathering material.
+    Read their actual tool list before calling either read-only: a set that still contains `Bash`
+    can write through a shell redirect, so "cannot write" is a claim to verify, not assume.
   - **Keep the drawer small.** Descriptions are resident context; a dozen near-identical helpers
     make the choice worse, not better. Prefer one good definition over three overlapping ones.
 - **A Claude Code hook, when a rule must hold rather than be remembered.** Permissions say what
