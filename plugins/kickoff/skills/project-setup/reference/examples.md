@@ -21,3 +21,4 @@ put a project on a paid plan.
 | Version control | `github` | needs token |
 | Methodology | `spec-first` (this kit) | ours |
 | Work that survives a long session | a **handoff note** — jot current state + decisions into the spec/ledger before context compacts | free practice |
+| Claude Code environment | `/doctor` (config intact), `/context` (what's already resident), `/permissions` (effective rules) | built-in, free |

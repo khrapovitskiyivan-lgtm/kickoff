@@ -2,6 +2,22 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.12.0 — the enforcement half
+Prompted by a course module on how a Claude Code environment is actually built. Its central point
+lands squarely on this plugin: **text is a request the model can lose track of; a setting is a rule
+the program enforces before the model acts.** kickoff lived entirely in the first layer.
+- **Deny baseline.** Step 4 only ever *widened* what runs unasked. It now offers `permissions.deny`
+  first — secrets, irreversible git, destructive shell, and whatever this project would most regret
+  losing. Denials are written once and hold; allows accrete. Rules resolve deny → ask → allow, so a
+  broad deny cannot be argued around.
+- **Scoped rules.** `.claude/rules/*.md` with `paths:` frontmatter load only when the agent opens a
+  matching file — the right home for a convention that is real but local, and would otherwise bloat
+  an always-resident `CLAUDE.md`. kickoff ignored this mechanism entirely.
+- **The project's `.claude/` is now an audited dimension.** We swept fourteen dimensions of a
+  project and never looked at the environment we exist to equip. It fails quietly: a trailing comma
+  stops a settings file applying and nobody is told; one wildcard `allow` undoes every narrower rule;
+  a `CLAUDE.md` past ~200 lines is followed worse, not better.
+
 ## 0.11.2
 - **Absence needs more proof than presence.** A gap could be declared on one empty grep, which
   proves you looked — not that the guard is missing. Found by dogfooding: a rate limiter was

@@ -34,7 +34,24 @@ need or gap — even if the answer is "already covered" or "n/a". Cover at least
   handles prompts** → OWASP **LLM Top 10**: prompt injection, secret/PII leakage into prompts,
   unsafe LLM-output handling) · **delivery** (CI, deploy, containers) · **observability** (errors, logs,
   metrics) · **performance** (caching, rate limiting) · **background work** (jobs, queues, cron)
-  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) · **+ anything the project implies**.
+  · **i18n** · **docs / ingest** · **collaboration** (PR / issues) ·
+  **the project's own `.claude/` environment** (see below) · **+ anything the project implies**.
+
+**Audit `.claude/` itself — it is part of the project you are equipping.** These fail quietly:
+a broken config just stops applying, and nobody is told. Check:
+- **`settings*.json` parses.** One trailing comma and the whole file is ignored — silently. Re-read
+  it as JSON; suggest `/doctor` for a wider look.
+- **No over-broad `allow`.** One wildcard entry undoes every narrower rule beneath it. Flag
+  `Bash(*)`-shaped grants and anything that silently permits arbitrary execution (see Step 4).
+- **No secrets in the committed `settings.json`** — that file reaches everyone who clones, and stays
+  in history. They belong in `settings.local.json` or the environment.
+- **`CLAUDE.md` size.** It loads whole, every session. Past roughly 200 lines it is followed *worse*,
+  not better — the important lines drown. Over that: keep the facts, move topical rules to
+  `.claude/rules/` (with `paths:` so they load only when relevant), procedures to skills.
+- **Contradictions.** Two rules pulling opposite ways ("be brief" / "be thorough") mean the model
+  picks one, and not reliably the one you meant. Read the set as a whole, not file by file.
+- **Stale config.** Settings are read at session start; an edit mid-session does nothing until a
+  restart. Same for a plugin whose installed copy lags its source.
 
 Stay on the project. Tuning the user's own Claude Code setup (status lines, compaction settings)
 is a different object — mention a **handoff note** if a session is long, and leave it there.
@@ -86,6 +103,27 @@ crystallize the vet — never write silently, never overwrite:
   - **Merge, don't clobber** — Read the file first, show the **literal added lines as a diff** at
     the approval gate, and re-parse the JSON after writing. Never `Write` over an existing settings
     file; only edit it.
+- **Deny baseline (offer it first).** An allowlist only ever *widens* what runs unasked; the half
+  that protects is `permissions.deny`, and it is the cheaper half — denials are written once and
+  hold for years, while allows accrete. Rules resolve **deny → ask → allow**, so a broad deny beats
+  any narrower allow underneath it and cannot be argued around. Offer a starting set, scoped to what
+  this project actually has:
+  - **Secrets**: `Read(.env)`, `Read(**/*credential*)`, `Read(**/*.pem)` — keep them out of context
+    in the first place, rather than trusting nothing leaks them later.
+  - **Irreversible git**: `Bash(git push --force*)`, `Bash(git reset --hard*)`.
+  - **Destructive shell**: `Bash(rm -rf *)`, and `Bash(curl * | bash)` (fetch-and-execute).
+  - **The project's own precious data** — whatever a lost file would cost most here (raw datasets,
+    migrations, generated reports). Ask what that is; it differs per project and is the one entry
+    a generic list can't supply.
+  This is the layer that does not depend on the model reading carefully: a text rule in `CLAUDE.md`
+  is a request the model can lose track of, a `deny` entry is enforced before it acts. **Anything
+  expensive to lose belongs here, not in prose.**
+- **Scoped rules (`.claude/rules/*.md`, when a convention only applies to part of the tree).**
+  A rule file with `paths:` frontmatter loads **only when the agent opens a matching file**, so it
+  costs nothing the rest of the time — the right home for "how we write X" that would bloat
+  `CLAUDE.md` if it were always resident. Offer one when a convention is real but local (a content
+  directory's tone, a migrations folder's rules, a generated-code area that must not be hand-edited).
+  Without `paths:` the file loads every session like `CLAUDE.md` — only worth it as organisation.
 - **CLAUDE.md stub (light, only if wanted).** Only when the project lacks one and the user asks:
   a short stub (stack + key conventions). Keep it minimal — `/init` owns full project docs; do
   **not** overwrite an existing `CLAUDE.md`.
