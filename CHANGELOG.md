@@ -2,6 +2,35 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.14.4 — the checker was the defect
+A meta-review found `scripts/check.sh` printing ALL CHECKS PASSED while four broken references
+shipped. It had caught **0 of the 9** defects this changelog records, and it was credited four
+times with owning a class it never covered. The cause: its regex matched only backticked paths
+beginning `reference/` or `scripts/`, so markdown links were invisible and **no file under
+`commands/` was ever examined**.
+
+- Extractor rewritten in python (the sed escaping was where the original went wrong, and a mangled
+  extractor fails silently, which is the whole bug). It now scans both the markdown-link and the
+  backtick form, skips paths that name a file in the *user's* project at runtime, and resolves each
+  reference from the citing file's directory and from the plugin root. Coverage went 9 refs to 16.
+- **Coverage assertion**, per directory: a check that silently matches nothing is indistinguishable
+  from a passing check. Not per file - `checkup.md` and `start.md` legitimately cite only
+  `.kickoff/notes.md` and `CLAUDE.md`, so "every file has a reference" is a false invariant; the
+  first draft of this assertion asserted it and had to be corrected.
+- **Proven to fail before being trusted.** Three seeded defects (a dead markdown link, a dead
+  backticked path, a deliberately broken extractor) each produce a FAIL; reverted, green again. A
+  check never observed failing is not a check.
+- Four dead references and a stale count fixed: `example-checkup.md` pointed at a file that never
+  existed and still said "15-item" after 0.9.0 made it 28; `example-equip.md` pointed at a renamed
+  file; `commands/security.md` carried a path unresolvable from `commands/`; `stack-adapters.md`
+  named `security-baseline.md` with no navigable path to another skill.
+- `unverified` added to the scorecard schema in `commands/security.md`. The prose has mandated that
+  status since 0.11.2 while the table offered only guarded/gap/n-a, so the one honest verdict had
+  nowhere to go and would round up to `guarded`.
+
+Nothing was added in this release. Per the rule adopted here: a correction may only delete or
+replace. 0.14.3 broke that rule while fixing a claim, which is how it shipped two unverified ones.
+
 ## 0.14.3 — two claims that pretended to be safety
 A follow-up review checked 0.14.2's replacement text against the live documentation, and found the
 fix had swapped one wrong claim for another. Both corrections below are sourced, not composed.

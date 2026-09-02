@@ -3,7 +3,7 @@ description: Focused security pass over the web-app baseline — one item at a t
 ---
 
 Walk the project against the `project-setup` skill's security baseline
-(`skills/project-setup/reference/security-baseline.md` in this plugin) — the holes
+(`../skills/project-setup/reference/security-baseline.md`) — the holes
 fast-built web projects have most often. Report findings; **fix nothing without confirmation**.
 
 > **Run this in a fresh session.** Whoever wrote the code will defend it — a clean context
@@ -45,7 +45,7 @@ A **security scorecard**, ordered by severity:
 
 ```
 ### Security scorecard <YYYY-MM-DD>
-| # | item | status (guarded/gap/n-a) | evidence (file:line) | severity |
+| # | item | status (guarded/gap/unverified/n-a) | evidence | severity |
 |---|---|---|---|---|
 | 3 | IDOR / object ownership | gap | api/orders.ts:42 — only checks session, not owner | high |
 | 5 | datastore RLS | guarded | supabase/policies.sql:12 | — |

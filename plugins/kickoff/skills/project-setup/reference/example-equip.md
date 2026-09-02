@@ -2,7 +2,7 @@
 
 What `project-setup` **Step 4** writes **only after you confirm** — the durable output of the
 vet. Merge-not-clobber; every line maps to a tool you approved in the checkup
-([`checkup-scorecard.md`](checkup-scorecard.md)).
+([`example-checkup.md`](example-checkup.md)).
 
 ## Permissions allowlist — `.claude/settings.local.json`
 

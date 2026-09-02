@@ -58,24 +58,59 @@ for f in plugins/kickoff/skills/*/SKILL.md plugins/kickoff/commands/*.md; do
 done
 
 echo "== reference paths resolve =="
-# Every `foo/bar.md`-looking reference inside a skill/command must exist relative to
-# that file's own directory — this is the check that would have caught statusline.sh
-# and security-baseline.md.
-while IFS=: read -r src ref; do
-  [ -z "$ref" ] && continue
-  dir=$(dirname "$src")
-  if [ -e "$dir/$ref" ]; then
-    note "ok   $src -> $ref"
-  else
-    bad "$src references '$ref', which does not exist relative to $dir/"
-  fi
-done < <(
-  grep -rhoE '^|`(\.\./)*(reference|scripts)/[A-Za-z0-9_.-]+\.(md|sh)`' \
-    plugins/kickoff/skills plugins/kickoff/commands 2>/dev/null >/dev/null
-  grep -rnoE '`(\.\./)*(reference|scripts)/[A-Za-z0-9_.-]+\.(md|sh)`' \
-    plugins/kickoff/skills plugins/kickoff/commands 2>/dev/null |
-    sed 's/:[0-9]*:/:/' | tr -d '`' | sort -u
+# Catches a reference to a file that does not exist. Two forms ship and BOTH must be scanned:
+# a backticked path and a markdown link. The old check saw only backticked paths beginning with
+# reference/ or scripts/, so nothing under commands/ was ever examined and two dead markdown
+# links shipped for twenty releases while this script printed ALL CHECKS PASSED.
+# Extraction is done in python: getting the two regexes and the tab-separated output right in
+# sed cost more than it saved, and a mangled extractor fails silently, which is the whole bug.
+_refout=$(python - <<'PYCHK'
+import os, re, sys
+root = "plugins/kickoff"
+# A path naming a file in the USER's project at runtime is not something we ship. Not a defect.
+runtime = re.compile(r"^(\.kickoff/|\.claude/|\.github/|CLAUDE\.md|CLAUDE\.local\.md|SPEC_CHANGELOG\.md|"
+                     r"package\.json|package-lock\.json|requirements|pyproject\.toml|go\.mod|settings\.json|"
+                     r"settings\.local\.json|\.mcp\.json|docker-compose|Dockerfile|conftest\.py|ruff\.toml|"
+                     r"\.pre-commit-config\.yaml|examples/)")
+pats = [re.compile(r"\]\(([A-Za-z0-9_./-]+\.(?:md|sh|json))\)"),
+        # A backticked name immediately followed by "](" is the LABEL of a markdown link,
+        # not a path - the link target right after it is what gets checked.
+        re.compile(r"`((?:\.\./)*[A-Za-z0-9_/.-]*[A-Za-z0-9_.-]+\.(?:md|sh))`(?!\]\()")]
+seen, per_file, scanned, bad = set(), {}, 0, []
+for dirpath, _, files in os.walk(root):
+    for fn in files:
+        if not fn.endswith(".md"):
+            continue
+        src = os.path.join(dirpath, fn).replace("\\", "/")
+        text = open(src, encoding="utf-8").read()
+        for pat in pats:
+            for ref in pat.findall(text):
+                if runtime.match(ref) or (src, ref) in seen:
+                    continue
+                seen.add((src, ref))
+                per_file[src] = per_file.get(src, 0) + 1
+                scanned += 1
+                if not (os.path.exists(os.path.join(os.path.dirname(src), ref))
+                        or os.path.exists(os.path.join(root, ref))):
+                    bad.append(f"{src} references '{ref}' - resolves neither from {os.path.dirname(src)}/ nor from {root}/")
+# A check that silently matches nothing is indistinguishable from a passing check, so assert the
+# denominator PER FILE: a broken pattern or a renamed directory then fails loudly and locally.
+# Assert per DIRECTORY, not per file: a command may legitimately cite only paths in the user's
+# project (checkup.md and start.md name .kickoff/notes.md and CLAUDE.md and nothing we ship),
+# so "every file has a reference" is a false invariant. What must never be zero is a whole tree.
+for area in (f"{root}/skills", f"{root}/commands"):
+    if not any(src.startswith(area) for src in per_file):
+        bad.append(f"no reference extracted anywhere under {area}/ - the pattern is broken")
+print(f"COUNT {scanned}")
+for b in bad:
+    print(f"BAD {b}")
+PYCHK
 )
+note "scanned $(printf '%s' "$_refout" | sed -n 's/^COUNT //p') shipped references"
+while IFS= read -r _l; do
+  [ -z "$_l" ] && continue
+  bad "${_l#BAD }"
+done < <(printf '%s\n' "$_refout" | grep '^BAD ')
 
 echo "== installed copy matches this repo =="
 # The repo and the installed plugin are independent: `claude plugin install` copies the

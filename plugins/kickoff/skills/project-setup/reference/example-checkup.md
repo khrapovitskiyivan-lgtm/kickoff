@@ -1,6 +1,6 @@
 # Example checkup — Leads intake
 
-What `/kickoff:checkup` reports for the module in [`leads-intake-spec.md`](leads-intake-spec.md):
+What `/kickoff:checkup` reports for the module in [`example-spec.md`](../../spec-first/reference/example-spec.md):
 a per-dimension **coverage scorecard**, then the **ledger** entry it appends. The next
 checkup diffs against this scorecard to show movement.
 
@@ -43,7 +43,7 @@ and will re-surface sentry only once a DSN exists.
 ## Security scorecard — what `/kickoff:security` adds
 
 The checkup above keeps security to **one line**. Because this project is web-facing, it
-delegates the deep pass, which walks the 15-item baseline one item at a time and cites
+delegates the deep pass, which walks the 28-item baseline one item at a time and cites
 `file:line` for every verdict:
 
 ### Security scorecard 2026-08-13
