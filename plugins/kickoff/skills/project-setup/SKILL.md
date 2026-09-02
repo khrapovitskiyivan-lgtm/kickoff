@@ -27,7 +27,9 @@ Read the code/config (`package.json`, `requirements.txt`, `pyproject.toml`, `go.
 need or gap — even if the answer is "already covered" or "n/a". Cover at least:
 
 - **code intelligence** · **testing** (unit + E2E + contract) · **data / DB access** ·
-  **frontend quality** (perf / CWV / a11y / SEO) · **security & privacy** (auth, PII, secrets,
+  **frontend quality** (perf / CWV / a11y / SEO; for a **marketing surface** — landing page,
+  storefront, prototype — also audit whether it reads as machine-made: `reference/ai-design-tells.md`,
+  mostly greppable) · **security & privacy** (auth, PII, secrets,
   dependency vulns; **web-facing app** → walk the concrete `reference/security-baseline.md`
   — auth/brute-force, IDOR, server-side authz, datastore RLS, injection, file uploads, secret
   exposure, webhook forgery, race conditions, paid-API cost, CORS; **if it calls an LLM /

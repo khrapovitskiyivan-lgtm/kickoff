@@ -2,6 +2,23 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.13.0 — auditing generated design
+A page can pass performance, accessibility and SEO and still read as machine-made. New
+`reference/ai-design-tells.md`, wired into the frontend-quality dimension for marketing surfaces
+(landing pages, storefronts, prototypes — explicitly not dashboards or product UI, where several
+of these patterns are legitimate).
+
+The useful part is that most of it is **countable**: em-dashes used as decoration, middle-dot
+separator chains, numbered step labels, section-number eyebrows, pure black, three equal feature
+cards, perfect round numbers. Each ships with the grep that finds it, so the audit is evidence
+rather than taste. A short second list covers what no grep will settle — div-built fake product UI
+in a hero being the loudest of them.
+
+Distilled from the AI-Tells catalogue in `Leonxlnx/taste-skill` (MIT) after vetting it as a whole:
+the 87 KB skill was not worth installing and would have needed a local fork to be safe, but the
+checklist inside it was. Validated by running it against a real storefront page, which turned up 177
+decorative em-dashes and 44 lines of stacked separators.
+
 ## 0.12.1
 - Deny baseline gains a **temporary freeze**: while debugging one thing, deny writes outside that
   directory, so a fix doesn't quietly touch six other files. Offered as a session measure with an
