@@ -115,6 +115,11 @@ crystallize the vet — never write silently, never overwrite:
   - **The project's own precious data** — whatever a lost file would cost most here (raw datasets,
     migrations, generated reports). Ask what that is; it differs per project and is the one entry
     a generic list can't supply.
+  - **A temporary freeze, when the task is debugging.** While chasing one bug, denying writes outside
+    the directory in question (`Write(!src/billing/**)`-shaped, per the host's pattern syntax) stops
+    the classic "fixed it, and quietly changed six other files" outcome. Offer it as a *session*
+    measure and say plainly it should be lifted afterwards — a freeze left behind is a puzzle for
+    whoever hits it next week.
   This is the layer that does not depend on the model reading carefully: a text rule in `CLAUDE.md`
   is a request the model can lose track of, a `deny` entry is enforced before it acts. **Anything
   expensive to lose belongs here, not in prose.**

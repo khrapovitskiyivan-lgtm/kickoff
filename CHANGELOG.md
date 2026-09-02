@@ -2,6 +2,12 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.12.1
+- Deny baseline gains a **temporary freeze**: while debugging one thing, deny writes outside that
+  directory, so a fix doesn't quietly touch six other files. Offered as a session measure with an
+  explicit note to lift it afterwards. Borrowed from vetting another toolkit whose `/freeze` command
+  was the one idea in it we didn't already have.
+
 ## 0.12.0 — the enforcement half
 Prompted by a course module on how a Claude Code environment is actually built. Its central point
 lands squarely on this plugin: **text is a request the model can lose track of; a setting is a rule
