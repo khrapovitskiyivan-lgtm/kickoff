@@ -2,6 +2,26 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.14.3 — two claims that pretended to be safety
+A follow-up review checked 0.14.2's replacement text against the live documentation, and found the
+fix had swapped one wrong claim for another. Both corrections below are sourced, not composed.
+
+- **The verification step was fabricated.** 0.14.2 said to check `/permissions` to see what is
+  actually in effect. `/permissions` lists rules and the file each came from; it says nothing about
+  whether a rule is consulted. And the host *does* warn about inert rules - a path rule written for
+  `Write`, `Glob`, `NotebookEdit` or `MultiEdit` is accepted, never consulted, and reported at
+  startup and by `claude doctor`. That is where to look. Presenting a non-check as the safety net was
+  worse than the bug it replaced. Added while correcting it: **the sandbox** is the only OS-level
+  answer to the subprocess hole the same paragraph identifies, and it merges existing deny rules
+  into its boundary rather than replacing them; and a settings file silently skips any `mcp__` rule
+  containing parentheses, so an MCP tool cannot be path-scoped there.
+- **A budget alert is not a fail-safe.** Item 25 called a provider-side alert "the real fail-safe
+  because it lives outside your code". Alerts notify; they do not stop spending, and they lag usage.
+  The real ceilings are a prepaid balance with auto-recharge off and the provider's hard spend limit.
+  Rewritten to those, plus: require auth before any paid call, cap per-user calls and `max_tokens`,
+  cache repeats. This was the only place in the checklist naming a non-control as the fail-safe, and
+  it guarded the failure most likely to end a solo project.
+
 ## 0.14.2 — remove advice that was wrong
 An adversarial review checked the deny baseline against the host's own documentation. Three things
 had to go, because wrong security advice is worse than none: a user who accepts a guard believes
@@ -22,6 +42,9 @@ an arbitrary subprocess or an MCP file server, and `/permissions` should be chec
 because a rule that is accepted but never consulted looks exactly like one that works. The old
 closing line, "anything expensive to lose belongs here, not in prose", was the false-confidence
 generator and is gone.
+
+*(The `/permissions` advice in the paragraph above was itself wrong and was corrected in 0.14.3:
+inert rules surface at startup and in `claude doctor`, not in `/permissions`.)*
 
 ## 0.14.1
 - Step 4's artifact catalogue moved to `reference/equip-artifacts-guide.md`, leaving one line per

@@ -43,9 +43,16 @@ personal one.
   substitution, and a command is split on `&&`, `||`, `;` and `|` before matching, so a pattern
   containing a pipe never matches anything. When something genuinely must not happen, deny the tool
   outright or use a `PreToolUse` hook; a clever argument pattern is a comfort, not a control. Denies
-  also do not reach an arbitrary subprocess (`python -c "open('.env').read()"`) or an MCP file server,
-  which needs its own rules. **After writing them, check `/permissions` to see what is actually in
-  effect** - a rule the host accepts but never consults looks identical to one that works.
+  also do not reach an arbitrary subprocess (`python -c "open('.env').read()"`); for that the only
+  OS-level answer is to **enable the sandbox**, which merges your existing `Read`/`Edit` denies into
+  its own filesystem boundary rather than replacing them. An MCP file server needs its own rules,
+  written as `mcp__<server>` or `mcp__<server>__<tool>`; a settings file **silently skips** any
+  `mcp__` rule containing parentheses, so an MCP tool cannot be path-scoped there at all.
+  **After writing rules, restart and read the startup warnings, then run `claude doctor`.** That is
+  where an inert rule surfaces: a path rule written for `Write`, `Glob`, `NotebookEdit` or
+  `MultiEdit` is accepted, never consulted, and warned about at startup. `/permissions` lists the
+  rules and the file each came from - useful for finding a shadowed rule, silent about whether a
+  rule is ever consulted.
 - **Scoped rules (`.claude/rules/*.md`, when a convention only applies to part of the tree).**
   A rule file with `paths:` frontmatter loads **only when the agent opens a matching file**, so it
   costs nothing the rest of the time — the right home for "how we write X" that would bloat
