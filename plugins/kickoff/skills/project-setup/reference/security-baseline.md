@@ -7,7 +7,7 @@ every address, not targeted hackers, so "small / unknown" is not cover.
 
 For each item: name the risk, verify the guard, demand the **file + line** where it lives.
 
-**A full scorecard is not an audit.** These 28 items are the common failures, not the field — a
+**A full scorecard is not an audit.** These 32 items are the common failures, not the field — a
 project can pass every one and still be broken through a path nobody here anticipated. Report what
 was *examined*; never let "28/28" read as "secure". Anything outside this list that the project's
 shape implies is still your job to raise.
@@ -47,6 +47,33 @@ shape implies is still your job to raise.
 26. **Insecure deserialization** — no `pickle.loads`, `yaml.load` (use `safe_load`), or Node `vm` on untrusted input.
 27. **CORS — and what it isn't.** CORS is **not an access control**: it relaxes the browser's same-origin policy and stops nothing from curl or any server-side client. Authn/authz is the guard. The bugs people actually ship: **reflecting the request `Origin` back** into `Access-Control-Allow-Origin` (`origin => cb(null, origin)`) — this *is* the exploit, and it works with credentials; sloppy matching (`endsWith("myapp.com")` matches `evilmyapp.com`); and allowlisting `null`. Use a literal allowlist.
 28. **Backups & recovery** — a tested restore, off-site. Not an attack, but the failure that ends projects; and a "done" backup that lives somewhere temporary is not a backup.
+
+## Telegram Mini App & bots
+Applies when the surface is a Mini App webview or a bot, where "the user" arrives as a signed blob
+rather than a session cookie.
+
+29. **`initData` trusted instead of re-derived** — the client sends identity and the server believes
+    it. Open the handler that turns `initData` into a user: the server must recompute the HMAC per
+    Telegram's algorithm (`secret = HMAC_SHA256("WebAppData", bot_token)`, then a check over every
+    field but `hash`, sorted by key, `key=value` joined by newlines, URL-decoded), compare in
+    constant time, and **guard equal buffer length first** — a constant-time compare throws on
+    differing lengths, so a malformed `hash` must come back as a rejection, not a 500. A route that
+    reads a user id out of the request body, or trusts what the client SDK reported, has no
+    authentication at all: anyone can post any id.
+30. **Replay, and the empty secret** — with no `auth_date` freshness check a captured `initData`
+    works forever; enforce a max age (3600s is the usual choice). And **fail closed when the bot
+    token is empty or missing**: validating against an empty secret makes every `initData`
+    forgeable, and an env file without the variable produces exactly that, silently, with all tests
+    still green.
+31. **Bot webhook without a secret** — the update URL is public and Telegram is not the only one who
+    can POST to it. Require the `x-telegram-bot-api-secret-token` header on every update, fail
+    closed when the configured secret is empty, and keep the bot token and webhook secret in the
+    environment. A bot update is untrusted input from a stranger: everything in item 21 applies to
+    whatever it reaches, an LLM call most of all.
+32. **The bot token in the client bundle** — it authenticates *as the bot*, so anything the browser
+    downloads must not contain it, and the server-side crypto module must not be bundled either.
+    Grep the built artefact, not the source: the leak is introduced by the bundler, in a file nobody
+    reads.
 
 ## How to run it (discipline)
 - **Don't ask "check the project for vulnerabilities"** — the agent answers "looks fine" and is technically right. Go **one item at a time**.

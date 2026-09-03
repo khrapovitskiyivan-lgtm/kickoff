@@ -64,7 +64,7 @@ each item — an earlier `open` that a later entry closed is closed, not still o
 ## Security scorecard — what `/kickoff:security` adds
 
 The checkup above keeps security to **one line**. Because this project is web-facing, it
-delegates the deep pass, which walks the 28-item baseline one item at a time and cites
+delegates the deep pass, which walks the 32-item baseline one item at a time and cites
 `file:line` for every verdict:
 
 ### Security scorecard 2026-08-13

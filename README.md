@@ -1,7 +1,7 @@
 # kickoff
 
 A shareable Claude Code starter kit for people shipping fast. It walks your project against a
-**28-item web-app security baseline** — the holes quickly-built apps actually have — and keeps a
+**32-item web-app and Telegram Mini App security baseline** — the holes quickly-built apps actually have — and keeps a
 **ledger** of what you installed, declined, and why, so nothing gets re-litigated and nothing
 silently rots. Around that: spec-first planning for new work, and a vetted tooling pass for the
 rest. A calmer alternative to "install this, install that" tutorials.
@@ -37,7 +37,7 @@ Restart Claude Code so both load.
 ## What it does
 
 **`/kickoff:security` — the deep security pass (start here for a live web app)**
-- Walks the **28-item web-app security baseline** one item at a time: password storage, sessions
+- Walks the **32-item security baseline** one item at a time: password storage, sessions
   and JWTs, IDOR, server-side authz, datastore RLS, CSRF, SSRF, injection, uploads, secret
   exposure, webhook forgery, race conditions, paid-API cost abuse, CORS, and more.
 - Every verdict carries evidence: a **quoted line** for a guard that exists, or the **search that
@@ -74,7 +74,7 @@ Restart Claude Code so both load.
 - `spec-first` skill — methodology overlay (track selector, 6-block spec, reverse-spec for
   legacy code, living-spec / drift control).
 - `project-setup` skill — analysis-first tooling recommendation by project dimension +
-  vetting + the ledger; includes a 28-item web-app **security baseline**.
+  vetting + the ledger; includes a 32-item web-app and Mini App **security baseline**.
 - `/kickoff:start`, `/kickoff:checkup`, `/kickoff:security` — commands.
 - A SessionStart primer for proactive, non-naggy activation.
 

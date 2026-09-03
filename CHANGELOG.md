@@ -2,6 +2,27 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.16.0 - the baseline covers Telegram Mini Apps
+The cold review's sharpest product finding: the baseline sells itself as covering "your project"
+while every one of its items assumes a browser app with a session cookie. For a Mini App - a
+webview where identity arrives as a signed blob - it had nothing, and item 22 covered only payment
+webhooks. Four items added, in the baseline's own risk-then-guard form:
+
+- **29. `initData` trusted instead of re-derived.** The HMAC the server must recompute, the
+  constant-time compare and the length guard before it (the compare throws on unequal lengths, so a
+  malformed hash has to come back a rejection, not a 500). A route that reads a user id from the
+  body has no authentication: anyone can post any id.
+- **30. Replay, and the empty secret.** No `auth_date` freshness means a captured `initData` works
+  forever. Validating against an empty bot token makes every `initData` forgeable, which is what a
+  missing env variable produces silently, with the tests still green.
+- **31. Bot webhook without a secret.** The update URL is public; require the secret-token header,
+  fail closed on an empty secret, and treat every update as a stranger's input for item 21.
+- **32. The bot token in the client bundle.** Grep the built artefact, not the source: the bundler
+  introduces this one, into a file nobody reads.
+
+The item count was stated in six places and every one of them said 28. All six updated - the same
+stale-count defect 0.14.4 fixed once already, which is an argument for stating it in one place.
+
 ## 0.15.5 - the six places where the instructions argued with themselves
 The rest of the independent run's findings, each of which forced the agent to pick a reading the
 text did not give it grounds for.
