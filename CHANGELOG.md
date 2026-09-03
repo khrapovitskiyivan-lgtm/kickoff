@@ -2,6 +2,19 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.15.1 — a quote proves presence, not protection
+The third instance of the defect 0.15.0 fixed, in the other protocol. A `guarded` verdict required
+a real quoted line, which rules out invention but not a guard pointed at nothing:
+`allow_origins=["*"]` cites exactly as convincingly as a literal origin list, and so do an RLS
+policy `USING (true)`, `verify=False`, a limit of 100000/minute, an owner check in a branch the
+request never enters.
+
+- Every citation now has to end with what the value *does*. Quote without that reading is
+  `unverified`, and a guard read and found wide open is a **gap** that happens to carry a line.
+- "A gap has no line" softened to "usually" — it was false for exactly that case.
+- The scorecard schema row for RLS cited a bare `file:line` while the prose above it demanded
+  citation plus text; it now shows the shape it asks for.
+
 ## 0.15.0 — verify-first checked the wrong thing, twice
 Two findings from a live `/kickoff:checkup` run on the ЧПУ project, neither of them from a review.
 

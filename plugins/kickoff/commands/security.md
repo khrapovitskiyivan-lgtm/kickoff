@@ -22,9 +22,16 @@ fast-built web projects have most often. Report findings; **fix nothing without 
    a Grep/Read result in *this* session, citation plus the text:
    `db/leads.py:24 — "select(Lead).where(Lead.id == bindparam('id'))"`.
    If you cannot paste the real text, the status is **`unverified`**, never `guarded` — do not
-   reconstruct line numbers from memory. A **gap** has no line, so it takes the other form: the
-   search you ran and its empty result — `grepped "rate|limit|throttle" across api/, 0 matches`.
+   reconstruct line numbers from memory. A **gap** usually has no line, so it takes the other form:
+   the search you ran and its empty result — `grepped "rate|limit|throttle" across api/, 0 matches`.
    A verdict with neither a quoted line nor a named empty search is not a finding; drop it.
+   **Read the value, not just the setting.** A quote proves the guard is *there*, never that it
+   guards: `allow_origins=["*"]` cites exactly as convincingly as a literal origin list, and so do
+   an RLS policy `USING (true)`, `verify=False`, a limit of 100000/minute, an owner check inside a
+   branch the request path never enters. Finish every citation with what the value *does* —
+   `main.py:31 — allow_origins=["https://unisnab.app"], literal list, no wildcard`. If you can quote
+   the line but cannot say that, the status is `unverified`. A guard you read and found wide open is
+   a **gap** that happens to carry a line: cite it and say what it lets through.
    **A gap needs more than one empty grep.** A named search that came back empty proves you looked,
    not that the guard is absent — the guard may simply be spelled differently (a hand-rolled counter
    is not called "throttle"). Before calling anything a gap: search **at least two independent
@@ -48,7 +55,7 @@ A **security scorecard**, ordered by severity:
 | # | item | status (guarded/gap/unverified/n-a) | evidence | severity |
 |---|---|---|---|---|
 | 3 | IDOR / object ownership | gap | api/orders.ts:42 — only checks session, not owner | high |
-| 5 | datastore RLS | guarded | supabase/policies.sql:12 | — |
+| 5 | datastore RLS | guarded | supabase/policies.sql:12 — `using (auth.uid() = owner_id)`, not `true` | — |
 ```
 
 Then, for each **gap**: what an attacker does with it, and the concrete fix — smallest change

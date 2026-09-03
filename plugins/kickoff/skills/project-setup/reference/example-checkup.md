@@ -74,8 +74,9 @@ delegates the deep pass, which walks the 28-item baseline one item at a time and
 | 14 | file upload | n-a | no upload route; grepped `UploadFile\|multipart`, 0 matches | — |
 | 27 | CORS | guarded | `main.py:31` — `allow_origins=["https://unisnab.app"]`, literal list | — |
 
-Note the two evidence shapes. A **guarded** verdict quotes the line it read; a **gap** has no line
-to cite, so it names the search that came back empty. Neither is a bare assertion — a `file:line`
+Note the two evidence shapes. A **guarded** verdict quotes the line it read *and says what the value
+does* — row 27 would quote just as convincingly with `allow_origins=["*"]`, which is why the evidence
+ends "literal list"; a **gap** usually has no line to cite, so it names the search that came back empty. Neither is a bare assertion — a `file:line`
 with nothing quoted is the easiest thing in the world to invent.
 
 Each gap is reported with what an attacker does with it and the smallest fix that closes
