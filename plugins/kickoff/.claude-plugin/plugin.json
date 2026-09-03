@@ -1,7 +1,7 @@
 {
   "name": "kickoff",
   "description": "Walk your project against a 28-item web-app security baseline with file:line evidence, and keep a ledger of what you installed, declined and why — verified each pass, so nothing is re-litigated and nothing silently rots. Plus spec-first planning and a vetted tooling pass.",
-  "version": "0.15.3",
+  "version": "0.15.4",
   "author": {
     "name": "khrapovitskiyivan-lgtm"
   },

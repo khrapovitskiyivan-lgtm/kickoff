@@ -2,6 +2,23 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.15.4 - the command stopped restating the skill
+From the same independent run: "Everything in checkup.md steps 1-3 is already in project-setup
+SKILL.md except the ordering." The agent read the same instruction three times - once in the
+command, once in the skill, once in the skill's longer `.claude/` section - and none of the repeats
+changed a line of its output.
+
+- Step 1 now keeps only what the skill does **not** cover: reading `CLAUDE.md` for stack,
+  conventions and open tasks, and offering to record undocumented conventions. Dependencies, config
+  files, the `claude plugin list` / `claude mcp list` inventory and the `.claude/` audit are the
+  skill's Step 1 and are no longer restated.
+- Step 3 is a pointer, not a paraphrase: run `project-setup` as written. It already owns the
+  ecosystem search, `npx skills find`, `claude-code-setup` and the vetting gate, all of which the
+  command had been repeating in shorter, and therefore diverging, form.
+- `checkup.md` is 14% smaller and says strictly less than before, which is the point: two copies of
+  one rule drift, and the shorter copy wins the model's attention while the longer one holds the
+  detail.
+
 ## 0.15.3 - reconcile before you verify
 0.15.0 shipped two rules without saying which one wins, and the read-only run of `/kickoff:checkup`
 walked straight into the gap: an `installed` entry named a design doc that a later entry had
