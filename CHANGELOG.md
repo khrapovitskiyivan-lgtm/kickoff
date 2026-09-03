@@ -2,6 +2,22 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.16.2 - the local ledger is a decision, now written down
+The review's last open question: `.kickoff/` is git-ignored, so the ledger is per machine, and six
+projects on two computers means unsynchronised journals. The decision stands - the ledger holds a
+`file:line` list of unfixed gaps and that must not be pushed - but the consequence was nowhere in
+the text, so every fresh reader rediscovers it as a defect.
+
+- Named it where the rule lives: a clone or a second machine has no ledger, kickoff reads the
+  project as first contact, and `/kickoff:start` is then correct rather than broken. What must
+  survive a clone belongs in `CLAUDE.md` or the spec, which are committed; the ledger is this
+  machine's record of what was checked and when.
+- And the escape hatch that is not one: if you want it to travel, move it by hand with the open
+  findings stripped. Do not commit the file.
+
+No behaviour change. This is the kit taking its own advice - a decision that is not written down
+gets re-litigated by the next reviewer, which is the cost the ledger exists to remove.
+
 ## 0.16.1 - the hook stopped needing bash
 The cold review said the SessionStart hook "fails silently on Windows without Git Bash". Checked
 against the docs, and that part is wrong: in shell form Claude Code falls back to PowerShell, where

@@ -177,6 +177,14 @@ Never write secrets into it. **Add `.kickoff/` to `.gitignore` when you create i
 accumulates a `file:line` list of *unfixed* security gaps, which is exactly the artifact you don't
 want committed and pushed. The findings are the sensitive part, not just any secrets in them.
 
+**So the ledger is per machine, deliberately, and that has a price worth naming.** A fresh clone,
+or the same project on a second computer, has no ledger: kickoff will read the project as
+first-contact and `/kickoff:start` is then the right command, not a bug. Nothing is lost that
+matters — decisions that must survive a clone belong in `CLAUDE.md` or the spec, which are
+committed; the ledger holds *this machine's* record of what was checked and when. If you do want it
+to travel, move it yourself and strip the open findings first; do not "solve" this by committing
+the file.
+
 ### Sibling roll-up — reuse what you already decided next door (optional)
 
 Decisions made in one project should not be re-litigated from scratch in the next. But another
