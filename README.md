@@ -26,6 +26,10 @@ claude plugin install kickoff@kickoff
 
 Restart Claude Code so both load.
 
+**Platform.** The SessionStart primer runs on `node`, which Claude Code already runs on, so it
+works on Windows with or without Git Bash. The greppable checks inside the reference files assume
+a POSIX shell (Git Bash on Windows); everything else is plain markdown.
+
 ## How it activates
 
 - **On its own** — a SessionStart primer makes Claude proactively offer the flow when

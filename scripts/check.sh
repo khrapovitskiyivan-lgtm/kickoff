@@ -21,27 +21,42 @@ for f in .claude-plugin/marketplace.json plugins/kickoff/.claude-plugin/plugin.j
   fi
 done
 
-echo "== shell scripts =="
+echo "== scripts parse =="
 for f in $(find plugins scripts -name '*.sh' 2>/dev/null); do
   if bash -n "$f" 2>/dev/null; then note "ok   $f"; else bad "$f has a syntax error"; fi
 done
+for f in $(find plugins -name '*.mjs' 2>/dev/null); do
+  if node --check "$f" 2>/dev/null; then note "ok   $f"; else bad "$f has a syntax error"; fi
+done
 
 echo "== SessionStart hook behaviour =="
-if bash plugins/kickoff/hooks-handlers/session-start.sh |
+if node plugins/kickoff/hooks-handlers/session-start.mjs |
    python -c "import json,sys;d=json.load(sys.stdin);assert d['hookSpecificOutput']['additionalContext']" 2>/dev/null; then
   note "ok   emits valid additionalContext JSON"
 else
   bad "hook did not emit valid JSON"
 fi
-if [ -z "$(KICKOFF_QUIET=1 bash plugins/kickoff/hooks-handlers/session-start.sh)" ]; then
+if [ -z "$(KICKOFF_QUIET=1 node plugins/kickoff/hooks-handlers/session-start.mjs)" ]; then
   note "ok   KICKOFF_QUIET=1 silences it"
 else
   bad "KICKOFF_QUIET=1 did not silence the primer"
 fi
+# The hook must not need bash: on Windows without Git Bash the shell form falls back to
+# PowerShell. Proven here where PowerShell exists; elsewhere this check is skipped, not faked.
+if command -v powershell >/dev/null 2>&1; then
+  if powershell -NoProfile -Command "node 'plugins/kickoff/hooks-handlers/session-start.mjs'" |
+     python -c "import json,sys;d=json.load(sys.stdin);assert d['hookSpecificOutput']['additionalContext']" 2>/dev/null; then
+    note "ok   runs under PowerShell too (no bash dependency)"
+  else
+    bad "hook does not run under PowerShell - Windows without Git Bash would break"
+  fi
+else
+  note "skip powershell not on this machine"
+fi
 # The marker is the fragile opt-out (path resolution), so it is the one that must be tested:
 # it must work from a directory OTHER than the project root.
 _tmp=$(mktemp -d) && mkdir -p "$_tmp/.kickoff" && touch "$_tmp/.kickoff/quiet"
-if [ -z "$(cd / && CLAUDE_PROJECT_DIR="$_tmp" bash "$OLDPWD/plugins/kickoff/hooks-handlers/session-start.sh" 2>/dev/null)" ]; then
+if [ -z "$(cd / && CLAUDE_PROJECT_DIR="$_tmp" node "$OLDPWD/plugins/kickoff/hooks-handlers/session-start.mjs" 2>/dev/null)" ]; then
   note "ok   .kickoff/quiet marker silences it from any cwd"
 else
   bad ".kickoff/quiet marker ignored when cwd is not the project root"

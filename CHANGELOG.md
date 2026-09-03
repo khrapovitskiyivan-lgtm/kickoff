@@ -2,6 +2,25 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.16.1 - the hook stopped needing bash
+The cold review said the SessionStart hook "fails silently on Windows without Git Bash". Checked
+against the docs, and that part is wrong: in shell form Claude Code falls back to PowerShell, where
+`bash` is not a command, the hook exits non-zero, and a hook-error notice is shown. Loud already -
+but the message names `bash`, not kickoff, so it diagnoses nothing, and the primer is gone for
+everyone on that machine.
+
+- `hooks-handlers/session-start.sh` is now `session-start.mjs`, invoked as `node ...`. Both shells
+  resolve `node`, and Claude Code already runs on it. Same primer text, byte-identical (diffed, not
+  assumed); same two opt-outs (`KICKOFF_QUIET`, the `.kickoff/quiet` marker resolved against
+  `CLAUDE_PROJECT_DIR`).
+- `check.sh` gains a **PowerShell arm**: the hook is run through PowerShell and its JSON parsed, so
+  the no-Git-Bash path is covered by a check rather than by an argument. Where PowerShell is absent
+  the check says `skip`, and skipping says so instead of passing.
+- Proven failing before being trusted: with a seeded non-JSON line the JSON check and the new
+  PowerShell check both FAIL; reverted, green.
+- README gains one honest platform line: the hook is portable, the greppable checks in the
+  reference files still assume a POSIX shell.
+
 ## 0.16.0 - the baseline covers Telegram Mini Apps
 The cold review's sharpest product finding: the baseline sells itself as covering "your project"
 while every one of its items assumes a browser app with a session cookie. For a Mini App - a
