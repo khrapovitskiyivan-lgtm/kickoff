@@ -67,12 +67,18 @@ a broken config just stops applying, and nobody is told. Check:
   duplicate each other or the built-ins (`Explore` for searching, `Plan` for gathering), and any
   whose `tools:` is wider than its job - **or absent**, which is wider than any of them.
 
-Stay on the project. Tuning the user's own Claude Code setup (status lines, compaction settings)
-is a different object — mention a **handoff note** if a session is long, and leave it there.
+Stay on the project. Audit the `.claude/` **this project ships**; tuning the user's own Claude Code
+setup (status lines, compaction settings) is a different object — mention a **handoff note** if a
+session is long, and leave it there. When the project has no `.claude/` of its own, the user-level
+file is not suddenly in scope: if a rule there materially changes what happens in *this* project
+(an over-broad `allow`, a mode that makes the whole permission list decorative), report it in **one
+line** as a finding and change nothing. Read the layers to understand which one is in force; only
+the project's own layer is yours to edit.
 
 Name **real gaps beyond the obvious stack tools** (rate limiting? i18n? CI? queues? caching?
-secret scanning?). For a deep, per-category analysis, **run the official `claude-code-setup`**
-if it's available (offer to install it if not) and fold its findings in.
+secret scanning?). If **`claude-code-setup`** is installed — check `claude plugin list`, one
+command — run it for a deep per-category analysis and fold its findings in. If it is not there,
+say so in one line and move on: do not go hunting for it, and do not treat its absence as a gap.
 
 ## Step 2 — For EACH gap, find the best-fit tool from ANYWHERE
 
@@ -203,4 +209,7 @@ Common defaults per dimension live in `reference/examples.md`. **Read it last, o
 sanity-check what you already chose** — never to generate candidates.
 
 Before finalizing, count your tags: **at most 2 recommendations may be tagged `example`.** A third
-means Step 2 was skipped for that gap — go back and search for it.
+means Step 2 was skipped for that gap — go back and search for it. The count applies only to
+recommendations that name a tool. A pass whose honest answer is "no new tooling, fix these three
+things with what is here" has nothing to count, and inventing a gap to fill the quota is the
+failure this rule exists to prevent.

@@ -2,6 +2,31 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.15.5 - the six places where the instructions argued with themselves
+The rest of the independent run's findings, each of which forced the agent to pick a reading the
+text did not give it grounds for.
+
+- **Security: "one line" vs "walk each dimension".** The skill splits security into two dimensions,
+  the command says one line. Now stated: in a checkup the two collapse into a single row.
+- **The `.claude/` audit was in scope and out of scope at once** ("read the layers" against "stay on
+  the project"). A project without its own `.claude/` left the user-level file in both. Now: audit
+  what the project ships; a user-level rule that materially changes what happens in this project is
+  reported in one line and changed by nobody.
+- **`claude-code-setup` was named as a known artifact** with no way to tell "not installed" from
+  "does not exist". Now it is one `claude plugin list` check, and its absence is a line, not a gap.
+- **The `example`-tag quota could not fire on a project with no gaps.** It now applies only to
+  recommendations that name a tool: a pass whose honest answer is "no new tooling" has nothing to
+  count, and inventing a gap to fill the quota is the failure the rule exists to prevent.
+- **The scorecard diff had no mapping rule** when the previous entry used other headers or statuses.
+  Map into the current vocabulary, say so in one line, do not rewrite history.
+- **No terminal state without a user.** Step 4 demands an approval and step 5 unconditionally writes
+  the ledger, so a non-interactive or read-only run had nowhere to stop. It now ends at the
+  presented plan, writes nothing, and prints the entry it would have appended.
+
+Not fixed, and not fixable from here: the behavioural eval this changelog keeps asking for.
+`claude plugin eval init` answers "`plugin eval` is currently in early access" and creates nothing.
+Every rule above is still enforced by nothing but the model reading it.
+
 ## 0.15.4 - the command stopped restating the skill
 From the same independent run: "Everything in checkup.md steps 1-3 is already in project-setup
 SKILL.md except the ordering." The agent read the same instruction three times - once in the
