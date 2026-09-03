@@ -124,22 +124,31 @@ Write nothing without an explicit yes. Record what was written in the ledger.
 ## Track the process — the ledger
 
 Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat and progress is visible.
-- **Before a pass — verify first, then skip.** Read the ledger, then collect every filesystem path
-  or setting named by an `installed` entry and **check them all in one batch**. Emit the result as a
+- **Before a pass — reconcile, then verify, then skip. In that order.** The ledger is append-only,
+  so first collapse it to the **latest mention of each item**: a later dated entry may have
+  installed, declined, cancelled or replaced what an earlier one recorded. Reconciling is
+  bookkeeping inside the file, it touches no disk, and it comes first.
+- **Then verify what the reconciled record still claims.** Collect every filesystem path or setting
+  a surviving `installed` entry names and **check them all in one batch**. Emit the result as a
   `verified / MISSING` list before recommending anything. **Only entries that verified may be
   skipped.** The ledger records what was *decided*, not what is *still true*: a `done` item that has
   since decayed outranks any new recommendation. Move each MISSING one back to `open`, saying what
   happened. (Seen in the wild: a backup recorded as done lived in a temp directory and was gone days
   later — the ledger still read "done" while the project had no copy at all.)
+- **A superseded line is stale, never MISSING.** Reconciling first is what keeps these apart: a path
+  that only an overridden entry named is not a decayed installation, it is an obsolete record, and
+  re-opening it would re-do work that was finished correctly. Report it once as a line worth
+  deleting and move on. (Seen in the wild: an entry named a design doc that a later entry had
+  renamed; verified against the old path it reads MISSING, and mechanically applied the rule would
+  have re-opened a closed task.) Verification answers what the ledger claims **now**.
 - **Verify what the entry was for, not that the path exists.** Existence is the cheap half of the
   check and it passes with the point already lost: `.git` is there, the repository has zero commits,
   and the entry that read "version control — history to roll back to" bought nothing. Check the
   promise instead — `git log -1` for history, a run for a test setup, the content for a config.
   Where only existence is checkable, write `verified (exists)`: a weaker verdict, not a silent one.
-- Then surface still-`open` items — **the latest mention wins**. Read the whole ledger and drop any
-  `open` line that a later dated entry installed, declined or cancelled; a stale `open` re-proposes
-  work already decided, the same failure as skipping a `done` that decayed. Re-surface a `declined`
-  item if its reason no longer holds.
+- Then surface still-`open` items — the ones still open **after** the reconcile, not every line
+  that ever said `open`; a stale `open` re-proposes work already decided, the same failure as
+  skipping a `done` that decayed. Re-surface a `declined` item if its reason no longer holds.
 - **After** a pass: append a dated entry (create the file on first pass). Format:
   ```
   ## <YYYY-MM-DD>

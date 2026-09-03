@@ -2,6 +2,20 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.15.3 - reconcile before you verify
+0.15.0 shipped two rules without saying which one wins, and the read-only run of `/kickoff:checkup`
+walked straight into the gap: an `installed` entry named a design doc that a later entry had
+renamed. Verified against the old path it reads MISSING, and the MISSING rule says re-open it -
+which would have re-opened a task that was finished correctly. The agent picked the sane answer on
+its own; the instruction gave it no grounds.
+
+- The two rules are now **an order, not a contest**: reconcile the ledger to each item's latest
+  mention (bookkeeping, no disk), then verify only what the reconciled record still claims.
+- **A superseded line is stale, never MISSING.** It is an obsolete record, not a decayed
+  installation: report it once as a line worth deleting and move on.
+- `reference/example-checkup.md` shows both cases side by side, since the worked example is what
+  gets copied.
+
 ## 0.15.2 - the counters did not count
 An independent pass: a cold read of the plugin by an agent told nothing about it, plus a read-only
 run of `/kickoff:checkup` against a real project. Two defects were real and are fixed here.

@@ -4,20 +4,24 @@ What `/kickoff:checkup` reports for the module in [`example-spec.md`](../../spec
 the **verify-first** pass over the old ledger, the per-dimension **coverage scorecard**, then the
 **ledger** entry it appends. The next checkup diffs against this scorecard to show movement.
 
-## Verify first — before a single thing is recommended
+## Reconcile, then verify — before a single thing is recommended
 
-Everything the earlier entries named, checked in one batch:
+First the ledger is collapsed to the latest mention of each item, on paper. Only what survives that
+is then checked against the disk, in one batch:
 
 ```
 verified               gitleaks — .pre-commit-config.yaml:7 names the hook
 verified (exists)      mkdocs — mkdocs.yml is present; nothing run here proves it still builds
 MISSING                nightly db dump — 07-30 read "done", /tmp/leads-backup/ is empty
+stale, not MISSING     docs/api-v1.md — named 07-30, renamed by the 08-06 entry; the line is
+                       obsolete, the work is done. Delete the line, do not re-open it
 closed, not re-opened  SPIKE-2 vector store — opened 07-30, cancelled by the 08-06 entry
 ```
 
 Only the two verified lines may be skipped, and the weaker one says so rather than passing
-silently. The MISSING one goes back to `open` and outranks every new suggestion below. The
-cancelled item is not re-surfaced as still-open: the latest mention of an item wins.
+silently. The MISSING one goes back to `open` and outranks every new suggestion below. The last two
+are why the reconcile comes first: checked against the old ledger both look like decay, and both
+would have re-opened work that was finished correctly.
 
 ## Coverage scorecard
 
