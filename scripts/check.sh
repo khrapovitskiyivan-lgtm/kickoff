@@ -75,7 +75,7 @@ runtime = re.compile(r"^(\.kickoff/|\.claude/|\.github/|CLAUDE\.md|CLAUDE\.local
 pats = [re.compile(r"\]\(([A-Za-z0-9_./-]+\.(?:md|sh|json))\)"),
         # A backticked name immediately followed by "](" is the LABEL of a markdown link,
         # not a path - the link target right after it is what gets checked.
-        re.compile(r"`((?:\.\./)*[A-Za-z0-9_/.-]*[A-Za-z0-9_.-]+\.(?:md|sh))`(?!\]\()")]
+        re.compile(r"`((?:\$\{CLAUDE_PLUGIN_ROOT\}/|(?:\.\./)*)[A-Za-z0-9_/.-]*[A-Za-z0-9_.-]+\.(?:md|sh))`(?!\]\()")]
 seen, per_file, scanned, bad = set(), {}, 0, []
 for dirpath, _, files in os.walk(root):
     for fn in files:
@@ -90,8 +90,14 @@ for dirpath, _, files in os.walk(root):
                 seen.add((src, ref))
                 per_file[src] = per_file.get(src, 0) + 1
                 scanned += 1
-                if not (os.path.exists(os.path.join(os.path.dirname(src), ref))
-                        or os.path.exists(os.path.join(root, ref))):
+                # A ${CLAUDE_PLUGIN_ROOT} reference resolves from the plugin root at runtime and
+                # from nowhere else, so it is checked that way and only that way.
+                var = "${CLAUDE_PLUGIN_ROOT}/"
+                if ref.startswith(var):
+                    if not os.path.exists(os.path.join(root, ref[len(var):])):
+                        bad.append(f"{src} references '{ref}' - not found under {root}/")
+                elif not (os.path.exists(os.path.join(os.path.dirname(src), ref))
+                          or os.path.exists(os.path.join(root, ref))):
                     bad.append(f"{src} references '{ref}' - resolves neither from {os.path.dirname(src)}/ nor from {root}/")
 # A check that silently matches nothing is indistinguishable from a passing check, so assert the
 # denominator PER FILE: a broken pattern or a renamed directory then fails loudly and locally.

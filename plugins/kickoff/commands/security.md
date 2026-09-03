@@ -3,7 +3,7 @@ description: Focused security pass over the web-app baseline — one item at a t
 ---
 
 Walk the project against the `project-setup` skill's security baseline
-(`../skills/project-setup/reference/security-baseline.md`) — the holes
+(`${CLAUDE_PLUGIN_ROOT}/skills/project-setup/reference/security-baseline.md`) — the holes
 fast-built web projects have most often. Report findings; **fix nothing without confirmation**.
 
 > **Run this in a fresh session.** Whoever wrote the code will defend it — a clean context

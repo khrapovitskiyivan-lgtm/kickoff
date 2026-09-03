@@ -2,6 +2,31 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.15.2 - the counters did not count
+An independent pass: a cold read of the plugin by an agent told nothing about it, plus a read-only
+run of `/kickoff:checkup` against a real project. Two defects were real and are fixed here.
+
+- **Five of the nine greps in `ai-design-tells.md` matched nothing.** The cause is not regex
+  ignorance: `\|` is markdown's escape for a pipe inside a table cell, and the model reads the raw
+  file, so `grep -E` saw a literal `|` instead of alternation. Two rows failed differently and
+  worse: the em-dash counter shipped `grep -o ... page \| wc -l`, whose escaped pipe breaks the
+  pipeline outright, and the cursor row shipped a command with no file argument next to a bare
+  backticked pattern that is not a command at all. Rewritten with repeated `-e` flags, which need
+  no pipe and read identically raw and rendered. **All nine are now proven firing**, extracted from
+  the file and executed as shipped against a fixture where every one of them must match.
+- The section-number pattern could not match its own documented example either: `00 / INDEX` has a
+  letter after the slash and the pattern demanded a digit. A file whose thesis is "count it, don't
+  eyeball it" had shipped counters that count nothing, for every release since 0.13.0.
+- **`commands/security.md` reached the baseline through `../skills/...`**, resolved relative to the
+  command file. `${CLAUDE_PLUGIN_ROOT}` was used exactly once in the entire plugin, in
+  `hooks/hooks.json`, so the path to the kit's main file had no anchor at runtime, while
+  `check.sh` resolved it from the citing file and stayed green. Now the variable form; the checker
+  resolves that form from the plugin root and from nowhere else, and was **proven failing** on a
+  seeded bad path before being trusted.
+- Worth recording: during this change the 0.14.4 coverage assertion fired on its own, not on a
+  seed. Rewriting the path before teaching the extractor produced "no reference extracted anywhere
+  under commands/", which is exactly the failure it was added to catch.
+
 ## 0.15.1 — a quote proves presence, not protection
 The third instance of the defect 0.15.0 fixed, in the other protocol. A `guarded` verdict required
 a real quoted line, which rules out invention but not a guard pointed at nothing:
