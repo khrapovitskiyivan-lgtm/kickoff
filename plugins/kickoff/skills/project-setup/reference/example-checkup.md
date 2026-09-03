@@ -1,8 +1,23 @@
 # Example checkup — Leads intake
 
 What `/kickoff:checkup` reports for the module in [`example-spec.md`](../../spec-first/reference/example-spec.md):
-a per-dimension **coverage scorecard**, then the **ledger** entry it appends. The next
-checkup diffs against this scorecard to show movement.
+the **verify-first** pass over the old ledger, the per-dimension **coverage scorecard**, then the
+**ledger** entry it appends. The next checkup diffs against this scorecard to show movement.
+
+## Verify first — before a single thing is recommended
+
+Everything the earlier entries named, checked in one batch:
+
+```
+verified               gitleaks — .pre-commit-config.yaml:7 names the hook
+verified (exists)      mkdocs — mkdocs.yml is present; nothing run here proves it still builds
+MISSING                nightly db dump — 07-30 read "done", /tmp/leads-backup/ is empty
+closed, not re-opened  SPIKE-2 vector store — opened 07-30, cancelled by the 08-06 entry
+```
+
+Only the two verified lines may be skipped, and the weaker one says so rather than passing
+silently. The MISSING one goes back to `open` and outranks every new suggestion below. The
+cancelled item is not re-surfaced as still-open: the latest mention of an item wins.
 
 ## Coverage scorecard
 
@@ -32,13 +47,15 @@ Top priorities: **CI**, **secret scanning + PII log-scrub**, then rate limiting.
 ```
 ## 2026-08-13
 - installed: gitleaks (security & privacy)
+- open: nightly db dump (data) — recorded done 07-30, verified MISSING today; re-do outside /tmp
 - open: github-actions (delivery) — no CI yet; blocks the acceptance grep check
 - open: slowapi (performance) — 429 path in spec has no enforcement
 - declined: sentry (observability) — no DSN / not self-hosting yet; revisit at launch
 ```
 
 A later checkup won't re-suggest gitleaks (installed) or sentry (declined, reason unchanged),
-and will re-surface sentry only once a DSN exists.
+and will re-surface sentry only once a DSN exists. It reads this entry as the latest word on
+each item — an earlier `open` that a later entry closed is closed, not still open.
 
 ## Security scorecard — what `/kickoff:security` adds
 

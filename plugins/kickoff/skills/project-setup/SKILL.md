@@ -131,7 +131,15 @@ Keep a per-project ledger at `.kickoff/notes.md` so recommendations don't repeat
   since decayed outranks any new recommendation. Move each MISSING one back to `open`, saying what
   happened. (Seen in the wild: a backup recorded as done lived in a temp directory and was gone days
   later — the ledger still read "done" while the project had no copy at all.)
-- Then surface still-`open` items; re-surface a `declined` item if its reason no longer holds.
+- **Verify what the entry was for, not that the path exists.** Existence is the cheap half of the
+  check and it passes with the point already lost: `.git` is there, the repository has zero commits,
+  and the entry that read "version control — history to roll back to" bought nothing. Check the
+  promise instead — `git log -1` for history, a run for a test setup, the content for a config.
+  Where only existence is checkable, write `verified (exists)`: a weaker verdict, not a silent one.
+- Then surface still-`open` items — **the latest mention wins**. Read the whole ledger and drop any
+  `open` line that a later dated entry installed, declined or cancelled; a stale `open` re-proposes
+  work already decided, the same failure as skipping a `done` that decayed. Re-surface a `declined`
+  item if its reason no longer holds.
 - **After** a pass: append a dated entry (create the file on first pass). Format:
   ```
   ## <YYYY-MM-DD>

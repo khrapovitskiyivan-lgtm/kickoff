@@ -54,7 +54,8 @@ Restart Claude Code so both load.
 
 **`/kickoff:checkup` — the repeat visit**
 - Reads the ledger and **verifies it**: anything recorded as done that names a file, config or
-  backup gets checked for still being there — a guard that rotted outranks any new suggestion.
+  backup gets checked for still doing its job, not merely still existing — a guard that rotted
+  outranks any new suggestion.
   Then reports what to strengthen, honoring what you already installed or declined.
 
 **How it recommends**

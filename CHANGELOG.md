@@ -2,6 +2,24 @@
 
 Notable changes to the kickoff plugin. Newest first.
 
+## 0.15.0 — verify-first checked the wrong thing, twice
+Two findings from a live `/kickoff:checkup` run on the ЧПУ project, neither of them from a review.
+
+- **Existence is not the promise.** The rule collected the paths an `installed` entry named and
+  checked they were there. An empty git repository passes "does `.git` exist" while the entry that
+  bought it — history to roll back to — is worth nothing. The check now asks what the entry was
+  *for* and tests that: `git log -1` for history, a run for a test setup, the content for a config.
+  Where only existence is checkable the verdict is `verified (exists)` — weaker out loud rather than
+  silently rounded up, the same shape as `unverified` in the security scorecard.
+- **`open` decays too.** The rule verified `installed` entries and passed every `open` one straight
+  through to "still open". The ledger is append-only, so a later dated entry may have installed,
+  declined or cancelled an item while the earlier line still reads `open` (seen on ЧПУ with the
+  cancelled SPIKE-1/2). Now the **latest mention of an item wins**, and a stale `open` is dropped
+  rather than re-proposed as work.
+- `reference/example-checkup.md` gains the verify-first pass it never showed — the worked example
+  had a scorecard and a ledger entry but no batch check, which is the step models copy.
+- `README.md` said a recorded item "gets checked for still being there"; replaced, same defect.
+
 ## 0.14.4 — the checker was the defect
 A meta-review found `scripts/check.sh` printing ALL CHECKS PASSED while four broken references
 shipped. It had caught **0 of the 9** defects this changelog records, and it was credited four
